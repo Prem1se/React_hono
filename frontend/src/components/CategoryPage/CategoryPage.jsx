@@ -18,7 +18,7 @@ const CategoryPage = () => {
   const [filters, setFilters] = useState({
     minPrice: '',
     maxPrice: '',
-    sortBy: 'default' // default, price-asc, price-desc
+    sortBy: 'default' // default price-asc price-desc
   });
 
   useEffect(() => {

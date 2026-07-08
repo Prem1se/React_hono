@@ -1,5 +1,4 @@
-/* PRODUCT DETAIL */
-.product-detail {
+﻿.product-detail {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 48px;
@@ -159,7 +158,7 @@
   background: var(--success-color);
 }
 
-/* Responsive Product Detail */
+
 @media (max-width: 1024px) {
   .product-detail {
     grid-template-columns: 1fr;

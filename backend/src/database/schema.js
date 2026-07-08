@@ -1,5 +1,5 @@
-export const initSchema = (db) => {
-  db.exec(`
+export const initSchema = async (db) => {
+  await db.execAsync(`
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       email TEXT UNIQUE NOT NULL,
@@ -50,6 +50,4 @@ export const initSchema = (db) => {
       FOREIGN KEY (productId) REFERENCES products(id) ON DELETE CASCADE
     );
   `);
-
-  console.log('Схема БД инициализирована');
 };

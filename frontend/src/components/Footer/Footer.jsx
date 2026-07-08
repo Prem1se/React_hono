@@ -43,7 +43,7 @@ const Footer = () => {
       </div>
 
       <div className="footer-bottom">
-        <p>© 2025 SKAM. Все права защищены.</p>
+        <p>2025 SKAM. Все права защищены.</p>
       </div>
     </footer>
   );

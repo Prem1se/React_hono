@@ -7,16 +7,23 @@ import { useLanguage } from '../../context/LanguageContext';
 const PopularProducts = () => {
   const navigate = useNavigate();
   const { t } = useLanguage();
-  const [products, setProducts] = useState([]);
+  const [popularProducts, setPopularProducts] = useState([]);
+  const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true);
-        const data = await productsAPI.getPopular();
-        setProducts(data);
+        const [popular, all] = await Promise.all([
+          productsAPI.getPopular(),
+          productsAPI.getAll()
+        ]);
+        setPopularProducts(popular);
+        // Исключаем популярные товары из списка "Все товары"
+        const popularIds = new Set(popular.map(p => p.id));
+        setAllProducts(all.filter(p => !popularIds.has(p.id)));
         setError(null);
       } catch (err) {
         console.error('Ошибка загрузки товаров:', err);
@@ -26,7 +33,7 @@ const PopularProducts = () => {
       }
     };
 
-    fetchProducts();
+    fetchData();
   }, []);
 
   if (loading) {
@@ -63,36 +70,42 @@ const PopularProducts = () => {
     );
   }
 
-  if (products.length === 0) {
-    return (
-      <div className="content-area">
-        <div className="page-header">
-          <h1>{t('home.title')}</h1>
-          <p>{t('home.subtitle')}</p>
-        </div>
-        <div className="empty-state">
-          <h2>Товары не найдены</h2>
-          <p>Проверьте подключение к бэкенду</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="content-area">
-      <div className="page-header">
-        <h1>{t('home.title')}</h1>
-        <p>{t('home.subtitle')}</p>
-      </div>
+      {/* Рекомендованные товары */}
+      {popularProducts.length > 0 && (
+        <div className="section-card">
+          <div className="page-header">
+            <h1>Рекомендованные товары</h1>
+          </div>
 
-      <div className="products-grid">
-        {products.map(product => (
-          <ProductCard 
-            key={product.id} 
-            product={product}
-            onClick={(product) => navigate(`/product/${product.id}`)}
-          />
-        ))}
+          <div className="products-grid">
+            {popularProducts.map(product => (
+              <ProductCard 
+                key={product.id} 
+                product={product}
+                onClick={(product) => navigate(`/product/${product.id}`)}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Все товары */}
+      <div className="section-card">
+        <div className="page-header">
+          <h1>Все товары</h1>
+        </div>
+
+        <div className="products-grid">
+          {allProducts.map(product => (
+            <ProductCard 
+              key={product.id} 
+              product={product}
+              onClick={(product) => navigate(`/product/${product.id}`)}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

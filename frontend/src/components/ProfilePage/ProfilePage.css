@@ -1,4 +1,4 @@
-/* PROFILE PAGE */
+﻿
 .profile-page {
   display: flex;
   flex-direction: column;
@@ -57,7 +57,7 @@
   border-bottom: 1px solid var(--border-color);
 }
 
-/* Responsive Profile */
+
 @media (max-width: 768px) {
   .profile-header {
     flex-direction: column;

@@ -6,153 +6,109 @@ const cart = new Hono();
 
 cart.use('*', authMiddleware);
 
-cart.get('/', (c) => {
-  return new Promise((resolve) => {
+const getCartItems = async (userId) => {
+  const rows = await db.allAsync(`
+    SELECT c.productId, c.quantity, p.name, p.price, p.image, p.category
+    FROM cart c
+    JOIN products p ON c.productId = p.id
+    WHERE c.userId = ?
+  `, [userId]);
+  
+  const items = rows || [];
+  const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  return { items, total };
+};
+
+cart.get('/', async (c) => {
+  try {
     const userId = c.get('userId');
-    
-    db.all(`
-      SELECT c.productId, c.quantity, p.name, p.price, p.image, p.category
-      FROM cart c
-      JOIN products p ON c.productId = p.id
-      WHERE c.userId = ?
-    `, [userId], (err, rows) => {
-      if (err) {
-        return resolve(c.json({ error: err.message }, 500));
-      }
-      const items = rows || [];
-      const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-      resolve(c.json({ items, total }));
-    });
-  });
+    return c.json(await getCartItems(userId));
+  } catch (error) {
+    return c.json({ error: error.message }, 500);
+  }
 });
 
-cart.post('/', (c) => {
-  return new Promise(async (resolve) => {
+cart.post('/', async (c) => {
+  try {
     const userId = c.get('userId');
     const { productId, quantity = 1 } = await c.req.json();
 
-    db.get('SELECT id FROM products WHERE id = ?', [productId], (err, product) => {
-      if (err) {
-        return resolve(c.json({ error: err.message }, 500));
-      }
-      if (!product) {
-        return resolve(c.json({ error: 'Товар не найден' }, 404));
-      }
+    const product = await db.getAsync('SELECT id FROM products WHERE id = ?', [productId]);
+    if (!product) {
+      return c.json({ error: 'Товар не найден' }, 404);
+    }
 
-      db.get(
-        'SELECT * FROM cart WHERE userId = ? AND productId = ?',
-        [userId, productId],
-        (err, row) => {
-          if (err) {
-            return resolve(c.json({ error: err.message }, 500));
-          }
+    const existing = await db.getAsync(
+      'SELECT * FROM cart WHERE userId = ? AND productId = ?',
+      [userId, productId]
+    );
 
-          if (row) {
-            db.run(
-              'UPDATE cart SET quantity = quantity + ? WHERE userId = ? AND productId = ?',
-              [quantity, userId, productId],
-              (err) => {
-                if (err) {
-                  return resolve(c.json({ error: err.message }, 500));
-                }
-                getCartItems(userId, resolve, c);
-              }
-            );
-          } else {
-            db.run(
-              'INSERT INTO cart (userId, productId, quantity) VALUES (?, ?, ?)',
-              [userId, productId, quantity],
-              (err) => {
-                if (err) {
-                  return resolve(c.json({ error: err.message }, 500));
-                }
-                getCartItems(userId, resolve, c);
-              }
-            );
-          }
-        }
+    if (existing) {
+      await db.runAsync(
+        'UPDATE cart SET quantity = quantity + ? WHERE userId = ? AND productId = ?',
+        [quantity, userId, productId]
       );
-    });
-  });
+    } else {
+      await db.runAsync(
+        'INSERT INTO cart (userId, productId, quantity) VALUES (?, ?, ?)',
+        [userId, productId, quantity]
+      );
+    }
+
+    return c.json(await getCartItems(userId));
+  } catch (error) {
+    return c.json({ error: error.message }, 500);
+  }
 });
 
-cart.put('/:productId', (c) => {
-  return new Promise(async (resolve) => {
+cart.put('/:productId', async (c) => {
+  try {
     const userId = c.get('userId');
     const productId = parseInt(c.req.param('productId'));
     const { quantity } = await c.req.json();
 
     if (quantity <= 0) {
-      db.run(
+      await db.runAsync(
         'DELETE FROM cart WHERE userId = ? AND productId = ?',
-        [userId, productId],
-        (err) => {
-          if (err) {
-            return resolve(c.json({ error: err.message }, 500));
-          }
-          getCartItems(userId, resolve, c);
-        }
+        [userId, productId]
       );
     } else {
-      db.run(
+      await db.runAsync(
         'UPDATE cart SET quantity = ? WHERE userId = ? AND productId = ?',
-        [quantity, userId, productId],
-        (err) => {
-          if (err) {
-            return resolve(c.json({ error: err.message }, 500));
-          }
-          getCartItems(userId, resolve, c);
-        }
+        [quantity, userId, productId]
       );
     }
-  });
+
+    return c.json(await getCartItems(userId));
+  } catch (error) {
+    return c.json({ error: error.message }, 500);
+  }
 });
 
-cart.delete('/:productId', (c) => {
-  return new Promise((resolve) => {
+cart.delete('/:productId', async (c) => {
+  try {
     const userId = c.get('userId');
     const productId = parseInt(c.req.param('productId'));
 
-    db.run(
+    await db.runAsync(
       'DELETE FROM cart WHERE userId = ? AND productId = ?',
-      [userId, productId],
-      (err) => {
-        if (err) {
-          return resolve(c.json({ error: err.message }, 500));
-        }
-        getCartItems(userId, resolve, c);
-      }
+      [userId, productId]
     );
-  });
+
+    return c.json(await getCartItems(userId));
+  } catch (error) {
+    return c.json({ error: error.message }, 500);
+  }
 });
 
-cart.delete('/', (c) => {
-  return new Promise((resolve) => {
+cart.delete('/', async (c) => {
+  try {
     const userId = c.get('userId');
-
-    db.run('DELETE FROM cart WHERE userId = ?', [userId], (err) => {
-      if (err) {
-        return resolve(c.json({ error: err.message }, 500));
-      }
-      resolve(c.json({ items: [], total: 0 }));
-    });
-  });
+    await db.runAsync('DELETE FROM cart WHERE userId = ?', [userId]);
+    return c.json({ items: [], total: 0 });
+  } catch (error) {
+    return c.json({ error: error.message }, 500);
+  }
 });
-
-const getCartItems = (userId, resolve, c) => {
-  db.all(`
-    SELECT c.productId, c.quantity, p.name, p.price, p.image, p.category
-    FROM cart c
-    JOIN products p ON c.productId = p.id
-    WHERE c.userId = ?
-  `, [userId], (err, rows) => {
-    if (err) {
-      return resolve(c.json({ error: err.message }, 500));
-    }
-    const items = rows || [];
-    const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    resolve(c.json({ items, total }));
-  });
-};
 
 export default cart;

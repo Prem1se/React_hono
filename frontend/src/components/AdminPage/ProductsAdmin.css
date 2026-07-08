@@ -1,4 +1,4 @@
-.products-admin {
+﻿.products-admin {
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -84,7 +84,7 @@
   font-size: 14px;
 }
 
-/* FORM */
+
 .product-form {
   background: var(--white);
   padding: 24px;
@@ -177,7 +177,7 @@
   background: var(--border-color);
 }
 
-/* TABLE */
+
 .products-table {
   background: var(--white);
   border-radius: 12px;

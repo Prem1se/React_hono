@@ -1,5 +1,4 @@
-/* CATEGORY CONTROLS */
-.category-controls {
+﻿.category-controls {
   display: flex;
   gap: 12px;
   margin: 20px 0;
@@ -46,7 +45,7 @@
   font-size: 10px;
 }
 
-/* FILTERS PANEL */
+
 .filters-panel {
   background: var(--white);
   border: 1px solid var(--border-color);
@@ -97,7 +96,7 @@
   border-top: 1px solid var(--border-color);
 }
 
-/* PAGINATION */
+
 .pagination {
   display: flex;
   justify-content: center;

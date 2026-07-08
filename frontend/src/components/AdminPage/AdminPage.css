@@ -1,5 +1,4 @@
-/* ADMIN PAGE */
-.admin-tabs {
+﻿.admin-tabs {
   display: flex;
   gap: 8px;
   margin-bottom: 32px;
@@ -186,7 +185,7 @@
   color: var(--text-secondary);
 }
 
-/* ADMIN CARD (для админов) */
+
 .admin-card {
   opacity: 0.8;
   background: #f9f9f9;
@@ -201,7 +200,7 @@
   font-style: italic;
 }
 
-/* USER ACTIONS */
+
 .user-actions {
   display: flex;
   align-items: center;
@@ -226,7 +225,7 @@
   transform: translateY(-1px);
 }
 
-/* ORDER CUSTOMER */
+
 .order-customer {
   font-size: 14px;
   color: var(--text-secondary);

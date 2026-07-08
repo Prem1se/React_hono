@@ -1,5 +1,4 @@
-/* CATEGORIES DROPDOWN */
-.categories-dropdown {
+﻿.categories-dropdown {
   position: absolute;
   top: 100%;
   left: 0;
@@ -51,7 +50,7 @@
   color: var(--text-secondary); 
 }
 
-/* Responsive Categories */
+
 @media (max-width: 768px) {
   .categories-dropdown {
     min-width: 280px;

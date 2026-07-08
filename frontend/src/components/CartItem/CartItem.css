@@ -1,5 +1,4 @@
-/* CART ITEM */
-.cart-item {
+﻿.cart-item {
   display: grid;
   grid-template-columns: 80px 1fr auto auto auto;
   gap: 16px;
@@ -83,7 +82,7 @@
   border-radius: 4px;
 }
 
-/* Responsive Cart Item */
+
 @media (max-width: 768px) {
   .cart-item {
     grid-template-columns: 60px 1fr;

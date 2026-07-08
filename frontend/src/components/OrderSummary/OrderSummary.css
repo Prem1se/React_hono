@@ -1,5 +1,4 @@
-/* ORDER SUMMARY */
-.cart-summary {
+﻿.cart-summary {
   background: var(--white);
   border-radius: 12px;
   padding: 24px;
@@ -55,7 +54,7 @@
   box-shadow: var(--shadow-md);
 }
 
-/* Responsive Order Summary */
+
 @media (max-width: 1024px) {
   .cart-summary {
     position: static;

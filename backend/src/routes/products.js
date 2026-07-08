@@ -4,176 +4,140 @@ import { adminMiddleware } from '../middleware/admin.js';
 
 const productsRouter = new Hono();
 
-productsRouter.post('/', adminMiddleware, (c) => {
-  return new Promise(async (resolve) => {
-    try {
-      const { name, price, category, description, image, stock } = await c.req.json();
+productsRouter.post('/', adminMiddleware, async (c) => {
+  try {
+    const { name, price, category, description, image, stock } = await c.req.json();
 
-      if (!name || !price || !category) {
-        return resolve(c.json({ error: 'name, price и category обязательны' }, 400));
-      }
-
-      db.run(
-        `INSERT INTO products (name, price, category, description, image, stock)
-         VALUES (?, ?, ?, ?, ?, ?)`,
-        [name, parseFloat(price), category, description || '', image || '', stock || 0],
-        function(err) {
-          if (err) {
-            return resolve(c.json({ error: err.message }, 500));
-          }
-          
-          db.get('SELECT * FROM products WHERE id = ?', [this.lastID], (err, product) => {
-            if (err) {
-              return resolve(c.json({ error: err.message }, 500));
-            }
-            resolve(c.json(product, 201));
-          });
-        }
-      );
-    } catch (error) {
-      resolve(c.json({ error: error.message }, 500));
+    if (!name || !price || !category) {
+      return c.json({ error: 'name, price и category обязательны' }, 400);
     }
-  });
+
+    const result = await db.runAsync(
+      'INSERT INTO products (name, price, category, description, image, stock) VALUES (?, ?, ?, ?, ?, ?)',
+      [name, parseFloat(price), category, description || '', image || '', stock || 0]
+    );
+    
+    const product = await db.getAsync('SELECT * FROM products WHERE id = ?', [result.lastID]);
+    return c.json(product, 201);
+  } catch (error) {
+    return c.json({ error: error.message }, 500);
+  }
 });
 
-productsRouter.put('/:id', adminMiddleware, (c) => {
-  return new Promise(async (resolve) => {
-    try {
-      const id = parseInt(c.req.param('id'));
-      const { name, price, category, description, image, stock } = await c.req.json();
-
-      if (!name || !price || !category) {
-        return resolve(c.json({ error: 'name, price и category обязательны' }, 400));
-      }
-
-      db.run(
-        `UPDATE products 
-         SET name = ?, price = ?, category = ?, description = ?, image = ?, stock = ?
-         WHERE id = ?`,
-        [name, parseFloat(price), category, description || '', image || '', stock || 0, id],
-        function(err) {
-          if (err) {
-            return resolve(c.json({ error: err.message }, 500));
-          }
-          
-          if (this.changes === 0) {
-            return resolve(c.json({ error: 'Товар не найден' }, 404));
-          }
-          
-          db.get('SELECT * FROM products WHERE id = ?', [id], (err, product) => {
-            if (err) {
-              return resolve(c.json({ error: err.message }, 500));
-            }
-            resolve(c.json(product));
-          });
-        }
-      );
-    } catch (error) {
-      resolve(c.json({ error: error.message }, 500));
-    }
-  });
-});
-
-productsRouter.delete('/:id', adminMiddleware, (c) => {
-  return new Promise((resolve) => {
+productsRouter.put('/:id', adminMiddleware, async (c) => {
+  try {
     const id = parseInt(c.req.param('id'));
+    const { name, price, category, description, image, stock } = await c.req.json();
 
-    db.run('DELETE FROM products WHERE id = ?', [id], function(err) {
-      if (err) {
-        return resolve(c.json({ error: err.message }, 500));
-      }
-      
-      if (this.changes === 0) {
-        return resolve(c.json({ error: 'Товар не найден' }, 404));
-      }
-      
-      resolve(c.json({ message: 'Товар удалён' }));
-    });
-  });
+    if (!name || !price || !category) {
+      return c.json({ error: 'name, price и category обязательны' }, 400);
+    }
+
+    await db.runAsync(
+      'UPDATE products SET name = ?, price = ?, category = ?, description = ?, image = ?, stock = ? WHERE id = ?',
+      [name, parseFloat(price), category, description || '', image || '', stock || 0, id]
+    );
+    
+    const product = await db.getAsync('SELECT * FROM products WHERE id = ?', [id]);
+    if (!product) {
+      return c.json({ error: 'Товар не найден' }, 404);
+    }
+    return c.json(product);
+  } catch (error) {
+    return c.json({ error: error.message }, 500);
+  }
 });
 
-// ===== PUBLIC ROUTES =====
-productsRouter.get('/categories/list', (c) => {
-  return new Promise((resolve) => {
-    db.all('SELECT DISTINCT category FROM products', [], (err, rows) => {
-      if (err) {
-        return resolve(c.json({ error: err.message }, 500));
-      }
-      resolve(c.json(rows.map(r => r.category)));
-    });
-  });
+productsRouter.delete('/:id', adminMiddleware, async (c) => {
+  try {
+    const id = parseInt(c.req.param('id'));
+    const result = await db.runAsync('DELETE FROM products WHERE id = ?', [id]);
+    
+    if (result.changes === 0) {
+      return c.json({ error: 'Товар не найден' }, 404);
+    }
+    
+    return c.json({ message: 'Товар удалён' });
+  } catch (error) {
+    return c.json({ error: error.message }, 500);
+  }
 });
 
-productsRouter.get('/popular', (c) => {
-  return new Promise((resolve) => {
-    db.all('SELECT * FROM products LIMIT 6', [], (err, rows) => {
-      if (err) {
-        return resolve(c.json({ error: err.message }, 500));
-      }
-      resolve(c.json(rows));
-    });
-  });
+productsRouter.get('/categories/list', async (c) => {
+  try {
+    const rows = await db.allAsync('SELECT DISTINCT category FROM products');
+    return c.json(rows.map(r => r.category));
+  } catch (error) {
+    return c.json({ error: error.message }, 500);
+  }
 });
 
-productsRouter.get('/search', (c) => {
+productsRouter.get('/popular', async (c) => {
+  try {
+    const rows = await db.allAsync(`
+      SELECT p.*, COUNT(oi.id) as purchaseCount
+      FROM products p
+      LEFT JOIN order_items oi ON p.id = oi.productId
+      GROUP BY p.id
+      ORDER BY purchaseCount DESC
+      LIMIT 4
+    `);
+    return c.json(rows);
+  } catch (error) {
+    return c.json({ error: error.message }, 500);
+  }
+});
+
+productsRouter.get('/search', async (c) => {
   const query = c.req.query('q');
   
   if (!query || query.length < 2) {
     return c.json([]);
   }
   
-  return new Promise((resolve) => {
-    db.all(
+  try {
+    const rows = await db.allAsync(
       'SELECT * FROM products WHERE name LIKE ? OR category LIKE ? OR description LIKE ? LIMIT 20',
-      [`%${query}%`, `%${query}%`, `%${query}%`],
-      (err, rows) => {
-        if (err) {
-          return resolve(c.json({ error: err.message }, 500));
-        }
-        resolve(c.json(rows));
-      }
+      [`%${query}%`, `%${query}%`, `%${query}%`]
     );
-  });
+    return c.json(rows);
+  } catch (error) {
+    return c.json({ error: error.message }, 500);
+  }
 });
 
-productsRouter.get('/category/:category', (c) => {
+productsRouter.get('/category/:category', async (c) => {
   const category = c.req.param('category');
   
-  return new Promise((resolve) => {
-    db.all('SELECT * FROM products WHERE category = ?', [category], (err, rows) => {
-      if (err) {
-        return resolve(c.json({ error: err.message }, 500));
-      }
-      resolve(c.json(rows));
-    });
-  });
+  try {
+    const rows = await db.allAsync('SELECT * FROM products WHERE category = ?', [category]);
+    return c.json(rows);
+  } catch (error) {
+    return c.json({ error: error.message }, 500);
+  }
 });
 
-productsRouter.get('/', (c) => {
-  return new Promise((resolve) => {
-    db.all('SELECT * FROM products', [], (err, rows) => {
-      if (err) {
-        return resolve(c.json({ error: err.message }, 500));
-      }
-      resolve(c.json(rows));
-    });
-  });
+productsRouter.get('/', async (c) => {
+  try {
+    const rows = await db.allAsync('SELECT * FROM products');
+    return c.json(rows);
+  } catch (error) {
+    return c.json({ error: error.message }, 500);
+  }
 });
 
-productsRouter.get('/:id', (c) => {
+productsRouter.get('/:id', async (c) => {
   const id = parseInt(c.req.param('id'));
   
-  return new Promise((resolve) => {
-    db.get('SELECT * FROM products WHERE id = ?', [id], (err, row) => {
-      if (err) {
-        return resolve(c.json({ error: err.message }, 500));
-      }
-      if (!row) {
-        return resolve(c.json({ error: 'Товар не найден' }, 404));
-      }
-      resolve(c.json(row));
-    });
-  });
+  try {
+    const product = await db.getAsync('SELECT * FROM products WHERE id = ?', [id]);
+    if (!product) {
+      return c.json({ error: 'Товар не найден' }, 404);
+    }
+    return c.json(product);
+  } catch (error) {
+    return c.json({ error: error.message }, 500);
+  }
 });
 
 export default productsRouter;

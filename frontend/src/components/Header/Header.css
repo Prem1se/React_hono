@@ -1,5 +1,4 @@
-/* HEADER */
-.header {
+﻿.header {
   background-color: var(--header-bg);
   color: #fff;
   height: 64px;
@@ -127,7 +126,7 @@
   position: relative; 
 }
 
-/* CART PREVIEW */
+
 .cart-preview {
   position: absolute;
   top: calc(100% + 8px);
@@ -289,7 +288,7 @@
   background: #f5f5f5; 
 }
 
-/* Responsive Header */
+
 @media (max-width: 768px) {
   .header-inner {
     padding: 0 16px;
