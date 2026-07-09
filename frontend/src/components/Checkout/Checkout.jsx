@@ -4,6 +4,7 @@ import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 import { useLanguage } from '../../context/LanguageContext';
 import { ordersAPI } from '../../services/api';
+import LoginModal from '../LoginModal/LoginModal';
 import Button from '../ui/Button/Button';
 import './Checkout.css';
 
@@ -20,6 +21,7 @@ const Checkout = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [error, setError] = useState('');
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const total = getTotalPrice();
 
@@ -32,6 +34,13 @@ const Checkout = () => {
     }
   }, [cartItems.length, paymentSuccess, navigate]);
 
+  // Если гость пытается оформить заказ — показать модалку входа
+  useEffect(() => {
+    if (!user && cartItems.length > 0 && !paymentSuccess) {
+      setShowLoginModal(true);
+    }
+  }, [user, cartItems.length, paymentSuccess]);
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -42,6 +51,11 @@ const Checkout = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
+    if (!user) {
+      setShowLoginModal(true);
+      return;
+    }
 
     if (!formData.fullName || !formData.phone || !formData.email) {
       setError('Заполните все поля');
@@ -113,6 +127,7 @@ const Checkout = () => {
   const cartItemsWithDetails = cartItems;
 
   return (
+    <>
     <div className="content-area">
       <h1>{t('checkout.title')}</h1>
       
@@ -187,6 +202,12 @@ const Checkout = () => {
         </div>
       </div>
     </div>
+
+    <LoginModal 
+      isOpen={showLoginModal} 
+      onClose={() => setShowLoginModal(false)} 
+    />
+    </>
   );
 };
 

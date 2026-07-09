@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
-import { useAuth } from '../../context/AuthContext';
 import { useLanguage } from '../../context/LanguageContext';
 import { productsAPI } from '../../services/api';
-import LoginModal from '../LoginModal/LoginModal';
 import Button from '../ui/Button/Button';
 import './ProductDetail.css';
 
@@ -12,14 +10,12 @@ const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addToCart } = useCart();
-  const { user } = useAuth();
   const { t } = useLanguage();
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [addedToCart, setAddedToCart] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [showLoginModal, setShowLoginModal] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -42,11 +38,6 @@ const ProductDetail = () => {
   }, [id]);
 
   const handleAddToCart = async () => {
-    if (!user) {
-      setShowLoginModal(true);
-      return;
-    }
-
     try {
       await addToCart(product, quantity);
       setAddedToCart(true);
@@ -139,11 +130,6 @@ const ProductDetail = () => {
           </div>
         </div>
       </div>
-
-      <LoginModal 
-        isOpen={showLoginModal} 
-        onClose={() => setShowLoginModal(false)} 
-      />
     </>
   );
 };
