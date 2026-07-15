@@ -42,6 +42,10 @@ export const authAPI = {
   resetPassword: (email, code, newPassword) => request('/auth/reset-password', {
     method: 'POST',
     body: JSON.stringify({ email, code, newPassword })
+  }),
+  updatePassword: (currentPassword, newPassword) => request('/auth/update-password', {
+    method: 'POST',
+    body: JSON.stringify({ currentPassword, newPassword })
   })
 };
 

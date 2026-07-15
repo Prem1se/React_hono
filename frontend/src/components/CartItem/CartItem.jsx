@@ -1,8 +1,10 @@
 import { MinusIcon, PlusIcon, TrashIcon } from '../ui/Icons';
 import { formatPrice } from '../../utils/formatPrice';
+import { useLanguage } from '../../context/LanguageContext';
 import './CartItem.css';
 
 const CartItem = ({ item, onUpdateQuantity, onRemove, idField = 'id' }) => {
+  const { t } = useLanguage();
   const itemId = item[idField];
   
   return (

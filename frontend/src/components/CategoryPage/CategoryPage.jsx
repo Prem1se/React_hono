@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { productsAPI } from '../../services/api';
 import ProductCard from '../ProductCard/ProductCard';
+import Spinner from '../ui/Spinner/Spinner';
 import { useLanguage } from '../../context/LanguageContext';
 import './CategoryPage.css';
 
@@ -75,7 +76,9 @@ const CategoryPage = () => {
   if (loading) {
     return (
       <div className="content-area">
-        <div className="loading">Загрузка...</div>
+        <div className="loading">
+          <Spinner />
+        </div>
       </div>
     );
   }
@@ -83,7 +86,7 @@ const CategoryPage = () => {
   return (
     <div className="content-area">
       <button className="back-btn" onClick={() => navigate('/')}>
-        ← Назад
+        ← {t('back')}
       </button>
       
       <div className="page-header">
@@ -93,20 +96,20 @@ const CategoryPage = () => {
 
       <div className="category-controls">
         <button className="filters-toggle" onClick={() => setShowFilters(!showFilters)}>
-          ⚙️ Фильтры {hasActiveFilters && <span className="filters-active-indicator">●</span>}
+          {t('filterToggle')} {hasActiveFilters && <span className="filters-active-indicator">●</span>}
         </button>
-        {hasActiveFilters && (
-          <button className="filters-reset" onClick={resetFilters}>
-            Сбросить
-          </button>
-        )}
+          {hasActiveFilters && (
+            <button className="filters-reset" onClick={resetFilters}>
+              {t('filterReset')}
+            </button>
+          )}
       </div>
 
       {showFilters && (
         <div className="filters-panel">
           <div className="filters-row">
             <div className="filter-group">
-              <label>Цена от</label>
+              <label>{t('filterMinPrice')}</label>
               <input
                 type="number"
                 value={filters.minPrice}
@@ -119,7 +122,7 @@ const CategoryPage = () => {
               />
             </div>
             <div className="filter-group">
-              <label>Цена до</label>
+              <label>{t('filterMaxPrice')}</label>
               <input
                 type="number"
                 value={filters.maxPrice}
@@ -132,72 +135,88 @@ const CategoryPage = () => {
               />
             </div>
             <div className="filter-group">
-              <label>Сортировка</label>
-              <select
-                value={filters.sortBy}
-                onChange={(e) => {
-                  setFilters({ ...filters, sortBy: e.target.value });
-                  setCurrentPage(1);
-                }}
-              >
-                <option value="default">По умолчанию</option>
-                <option value="price-asc">Сначала дешёвые</option>
-                <option value="price-desc">Сначала дорогие</option>
-              </select>
+              <label>{t('filterSort')}</label>
+              <div className="sort-buttons">
+                <button
+                  className={`sort-btn ${filters.sortBy === 'default' ? 'active' : ''}`}
+                  onClick={() => {
+                    setFilters({ ...filters, sortBy: 'default' });
+                    setCurrentPage(1);
+                  }}
+                >
+                  {t('filterDefault')}
+                </button>
+                <button
+                  className={`sort-btn ${filters.sortBy === 'price-asc' ? 'active' : ''}`}
+                  onClick={() => {
+                    setFilters({ ...filters, sortBy: 'price-asc' });
+                    setCurrentPage(1);
+                  }}
+                >
+                  {t('filterSortAsc')} {t('filterPriceAsc')}
+                </button>
+                <button
+                  className={`sort-btn ${filters.sortBy === 'price-desc' ? 'active' : ''}`}
+                  onClick={() => {
+                    setFilters({ ...filters, sortBy: 'price-desc' });
+                    setCurrentPage(1);
+                  }}
+                >
+                  {t('filterSortDesc')} {t('filterPriceDesc')}
+                </button>
+              </div>
             </div>
           </div>
           <div className="filters-results">
-            Найдено: {filteredProducts.length} из {products.length}
+            {t('filterFound')} {filteredProducts.length} {t('filterOf')} {products.length}
           </div>
         </div>
       )}
 
       {currentProducts.length === 0 ? (
         <div className="empty-state">
-          <p>Товары не найдены</p>
+          <p>{t('productsNotFound')}</p>
         </div>
       ) : (
-        <>
-          <div className="products-grid">
-            {currentProducts.map(product => (
-              <ProductCard 
-                key={product.id} 
-                product={product}
-                onClick={() => navigate(`/product/${product.id}`)}
-              />
-            ))}
-          </div>
+        <div className="products-grid">
+          {currentProducts.map(product => (
+            <ProductCard 
+              key={product.id} 
+              product={product}
+              onClick={() => navigate(`/product/${product.id}`)}
+            />
+          ))}
+        </div>
+      )}
 
-          {totalPages > 1 && (
-            <div className="pagination">
-              <button 
-                className="pagination-btn"
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1}
-              >
-                ← Назад
-              </button>
-              
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-                <button
-                  key={page}
-                  className={`pagination-btn ${currentPage === page ? 'active' : ''}`}
-                  onClick={() => handlePageChange(page)}
-                >
-                  {page}
-                </button>
-              ))}
-              
-              <button 
-                className="pagination-btn"
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
-              >
-                Вперёд →
-              </button>
-            </div>
-          )}
-        </>
+      {totalPages > 1 && (
+        <div className="pagination">
+          <button 
+            className="pagination-btn"
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            ← {t('back')}
+          </button>
+          
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+            <button
+              key={page}
+              className={`pagination-btn ${currentPage === page ? 'active' : ''}`}
+              onClick={() => handlePageChange(page)}
+            >
+              {page}
+            </button>
+          ))}
+          
+          <button 
+            className="pagination-btn"
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            {t('forward')}
+          </button>
+        </div>
       )}
     </div>
   );

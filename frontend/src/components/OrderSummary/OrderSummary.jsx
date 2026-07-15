@@ -1,15 +1,19 @@
+import { useLanguage } from '../../context/LanguageContext';
 import './OrderSummary.css';
 
 const OrderSummary = ({ cartItems, total, showCheckoutButton = false, onCheckout, t }) => {
+  const { t: tContext } = useLanguage();
+  const translate = t || tContext;
+  
   return (
     <div className="cart-summary">
-      <h2>{t?.('cart.total') || 'Итого'}</h2>
+      <h2>{translate('cart.total')}</h2>
       <div className="summary-row">
         <span>Товары</span>
         <span>{total.toFixed(0)} ₽</span>
       </div>
       <div className="summary-total">
-        <span>{t?.('cart.total') || 'Итого'}</span>
+        <span>{translate('cart.total')}</span>
         <span>{total.toFixed(0)} ₽</span>
       </div>
       
@@ -19,7 +23,7 @@ const OrderSummary = ({ cartItems, total, showCheckoutButton = false, onCheckout
           className="checkout-btn"
           disabled={total === 0}
         >
-          {t?.('cart.checkout') || 'Оформить заказ'} →
+          {translate('cart.checkout')} →
         </button>
       )}
     </div>

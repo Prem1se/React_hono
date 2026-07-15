@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { productsAPI } from '../../services/api';
+import Spinner from '../ui/Spinner/Spinner';
 import { useLanguage } from '../../context/LanguageContext';
 import { SearchIcon } from '../ui/Icons';
 import { formatPrice } from '../../utils/formatPrice';
@@ -51,7 +52,7 @@ const SearchBar = () => {
   };
 
   return (
-    <div className="search-bar-container" style={{ position: 'relative' }}>
+    <div className="search-bar-container" style={{ position: 'relative', width: '100%' }}>
       <div className="search-bar">
         <SearchIcon size={18} />
         <input 
@@ -85,7 +86,15 @@ const SearchBar = () => {
       {isOpen && query.length >= 2 && results.length === 0 && !loading && (
         <div className="search-results">
           <div className="search-no-results">
-            Товары не найдены
+            {t('productsNotFound')}
+          </div>
+        </div>
+      )}
+
+      {loading && (
+        <div className="search-results">
+          <div className="search-loading">
+            <Spinner size="small" />
           </div>
         </div>
       )}

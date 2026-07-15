@@ -19,14 +19,15 @@
 }
 
 .filters-toggle {
-  background: var(--bg-color);
+  background: var(--bg-secondary);
   border: 1px solid var(--border-color);
-  color: var(--text-primary);
+  color: var(--white);
 }
 
 .filters-toggle:hover {
-  border-color: var(--primary-color);
-  color: var(--primary-color);
+  border-color: var(--white);
+  color: var(--white);
+  background: var(--white);
 }
 
 .filters-reset {
@@ -41,15 +42,15 @@
 }
 
 .filters-active-indicator {
-  color: var(--primary-color);
+  color: var(--white);
   font-size: 10px;
 }
 
 
 .filters-panel {
-  background: var(--white);
+  background: var(--bg-secondary);
   border: 1px solid var(--border-color);
-  border-radius: 12px;
+  border-radius: 8px;
   padding: 20px;
   margin-bottom: 24px;
 }
@@ -76,17 +77,49 @@
 .filter-group input,
 .filter-group select {
   padding: 10px 14px;
+  background: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-radius: 8px;
   font-size: 14px;
   font-family: inherit;
-  transition: border-color 0.2s;
+  transition: all 0.2s;
+  color: var(--text-primary);
 }
 
 .filter-group input:focus,
 .filter-group select:focus {
   outline: none;
   border-color: var(--primary-color);
+}
+
+.sort-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.sort-btn {
+  flex: 1;
+  padding: 10px 12px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  color: var(--text-primary);
+}
+
+.sort-btn:hover {
+  border-color: var(--white);
+  color: var(--white);
+}
+
+.sort-btn.active {
+  background: var(--white);
+  border-color: var(--white);
+  color: var(--bg-color);
 }
 
 .filters-results {
@@ -112,7 +145,7 @@
   height: 40px;
   padding: 0 12px;
   border: 1px solid var(--border-color);
-  background: var(--white);
+  background: var(--bg-secondary);
   border-radius: 8px;
   font-size: 14px;
   font-weight: 600;
@@ -123,14 +156,15 @@
 }
 
 .pagination-btn:hover:not(:disabled) {
-  border-color: var(--primary-color);
-  color: var(--primary-color);
+  border-color: var(--white);
+  color: var(--white);
+  background: var(--white);
 }
 
 .pagination-btn.active {
-  background: var(--primary-color);
-  border-color: var(--primary-color);
-  color: white;
+  background: var(--white);
+  border-color: var(--white);
+  color: var(--bg-color);
 }
 
 .pagination-btn:disabled {
@@ -149,4 +183,18 @@
     height: 36px;
     font-size: 13px;
   }
+  
+  .sort-buttons {
+    flex-direction: column;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-secondary);
+}
+
+.empty-state p {
+  font-size: 16px;
 }

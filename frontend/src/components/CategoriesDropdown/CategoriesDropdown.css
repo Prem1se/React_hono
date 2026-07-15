@@ -7,11 +7,12 @@
 }
 
 .categories-dropdown-inner {
-  background: #fff;
-  border-radius: 12px;
+  background: var(--bg-secondary);
+  border-radius: 8px;
   box-shadow: var(--shadow-lg);
   padding: 20px;
   min-width: 400px;
+  border: 1px solid var(--border-color);
 }
 
 .categories-grid {
@@ -25,13 +26,21 @@
   align-items: flex-start;
   gap: 12px;
   padding: 12px;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
   transition: background 0.2s;
 }
 
 .category-item:hover { 
-  background: #f5f5f5; 
+  background: var(--white);
+}
+
+.category-item:hover .category-info h4 {
+  color: var(--bg-color);
+}
+
+.category-item:hover .category-info p {
+  color: rgba(0, 0, 0, 0.6);
 }
 
 .category-icon { 

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useLanguage } from '../../context/LanguageContext';
+import Spinner from '../ui/Spinner/Spinner';
 import Modal from '../ui/Modal/Modal';
 import Button from '../ui/Button/Button';
 import './LoginModal.css';
@@ -81,7 +82,11 @@ const LoginModal = ({ isOpen, onClose }) => {
         )}
         
         <Button type="submit" variant="primary" size="large" disabled={loading}>
-          {loading ? '...' : (isRegister ? t('auth.registerNow') : t('auth.loginNow'))}
+          {loading ? (
+            <div className="button-spinner">
+              <Spinner size="small" />
+            </div>
+          ) : (isRegister ? t('auth.registerNow') : t('auth.loginNow'))}
         </Button>
 
         <div className="auth-switch">

@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { adminAPI } from '../../services/api';
+import Spinner from '../ui/Spinner/Spinner';
 import { useLanguage } from '../../context/LanguageContext';
 import ProductsAdmin from './ProductsAdmin';
+import { ProductIcon, UsersIcon, OrderIcon, StatsIcon, ViewOrdersIcon, AdminBadgeIcon, UserIcon, PhoneIcon, EmailIcon } from '../ui/Icons';
 import './AdminPage.css';
 
 const AdminPage = () => {
@@ -22,7 +24,7 @@ const AdminPage = () => {
         const usersData = await adminAPI.getUsers();
         setUsers(usersData);
       } catch (err) {
-        console.error('Ошибка загрузки пользователей:', err);
+        console.error('Error loading users:', err);
       }
     };
     fetchUsers();
@@ -47,7 +49,7 @@ const AdminPage = () => {
         setStats(statsData);
       }
     } catch (err) {
-      console.error('Ошибка загрузки данных:', err);
+      console.error('Error loading data:', err);
     } finally {
       setLoading(false);
     }
@@ -81,7 +83,7 @@ const AdminPage = () => {
     return (
       <div className="content-area">
         <button className="back-btn" onClick={handleBackToUsers}>
-          ← Назад к пользователям
+          ← {t('admin.users')}
         </button>
 
         <div className="profile-header">
@@ -91,30 +93,30 @@ const AdminPage = () => {
           <div className="profile-info">
             <h1>{selectedUser.email}</h1>
             <p className="profile-email-display">
-              Роль: {selectedUser.role} • Зарегистрирован: {new Date(selectedUser.createdAt).toLocaleDateString('ru-RU')}
+              {t('admin.role')}: {selectedUser.role} • {t('admin.userRegistered')}: {new Date(selectedUser.createdAt).toLocaleDateString('ru-RU')}
             </p>
           </div>
         </div>
 
         <div className="profile-section">
-          <h2>Заказы пользователя ({selectedUserOrders.length})</h2>
+          <h2>{t('admin.ordersList')} ({selectedUserOrders.length})</h2>
           
           {selectedUserOrders.length === 0 ? (
             <div className="empty-state">
-              <p>У пользователя пока нет заказов</p>
+              <p>{t('admin.noOrders')}</p>
             </div>
           ) : (
             <div className="orders-list">
               {selectedUserOrders.map(order => (
                 <div key={order.id} className="order-card">
                   <div className="order-header">
-                    <span className="order-id">Заказ #{order.id}</span>
+                    <span className="order-id">{t('admin.orderNumber')} {order.id}</span>
                     <span className="order-date">
                       {new Date(order.createdAt).toLocaleString('ru-RU')}
                     </span>
                   </div>
                   <div className="order-customer">
-                    👤 {order.fullName} • 📞 {order.phone} • ✉️ {order.email}
+                    <UserIcon size={14} /> {order.fullName} • <PhoneIcon size={14} /> {order.phone} • <EmailIcon size={14} /> {order.email}
                   </div>
                   <div className="order-items">
                     {order.items.map((item, idx) => (
@@ -131,7 +133,7 @@ const AdminPage = () => {
                     ))}
                   </div>
                   <div className="order-total">
-                    Итого: <strong>{order.total.toFixed(0)} ₽</strong>
+                    {t('admin.total')}: <strong>{order.total.toFixed(0)} ₽</strong>
                   </div>
                 </div>
               ))}
@@ -144,48 +146,50 @@ const AdminPage = () => {
 
   return (
     <div className="content-area">
-      <h1>🛠️ Админ-панель</h1>
+      <h1>{t('admin.panel')}</h1>
 
       <div className="admin-tabs">
         <button 
           className={`admin-tab ${activeTab === 'products' ? 'active' : ''}`}
           onClick={() => setActiveTab('products')}
         >
-          📦 Товары
+          <ProductIcon size={16} /> {t('admin.products')}
         </button>
         <button 
           className={`admin-tab ${activeTab === 'users' ? 'active' : ''}`}
           onClick={() => setActiveTab('users')}
         >
-          👥 Пользователи
+          <UsersIcon size={16} /> {t('admin.users')}
         </button>
         <button 
           className={`admin-tab ${activeTab === 'orders' ? 'active' : ''}`}
           onClick={() => setActiveTab('orders')}
         >
-          📦 Заказы
+          <OrderIcon size={16} /> {t('admin.orders')}
         </button>
         <button 
           className={`admin-tab ${activeTab === 'stats' ? 'active' : ''}`}
           onClick={() => setActiveTab('stats')}
         >
-          📊 Статистика
+          <StatsIcon size={16} /> {t('admin.stats')}
         </button>
       </div>
 
       {loading ? (
-        <div className="loading">Загрузка...</div>
+        <div className="loading">
+          <Spinner />
+        </div>
       ) : (
         <>
           {activeTab === 'products' && <ProductsAdmin />}
 
           {activeTab === 'users' && (
             <div className="admin-section">
-              <h2>Обычные пользователи ({regularUsers.length})</h2>
+              <h2>{t('admin.regularUsers')} ({regularUsers.length})</h2>
               
               {regularUsers.length === 0 ? (
                 <div className="empty-state">
-                  <p>Пока нет зарегистрированных пользователей</p>
+                  <p>{t('admin.noRegisteredUsers')}</p>
                 </div>
               ) : (
                 <div className="users-list">
@@ -200,17 +204,17 @@ const AdminPage = () => {
                           <div className="user-role">{user.role}</div>
                         </div>
                       </div>
-                      <div className="user-actions">
-                        <div className="user-date">
-                          {new Date(user.createdAt).toLocaleDateString('ru-RU')}
+                        <div className="user-actions">
+                          <div className="user-date">
+                            {new Date(user.createdAt).toLocaleDateString('ru-RU')}
+                          </div>
+                          <button 
+                            className="view-orders-btn"
+                            onClick={() => handleViewUserOrders(user)}
+                          >
+                            <ViewOrdersIcon size={14} /> {t('admin.viewOrders')}
+                          </button>
                         </div>
-                        <button 
-                          className="view-orders-btn"
-                          onClick={() => handleViewUserOrders(user)}
-                        >
-                          📦 Заказы
-                        </button>
-                      </div>
                     </div>
                   ))}
                 </div>
@@ -219,7 +223,7 @@ const AdminPage = () => {
               {adminUsers.length > 0 && (
                 <>
                   <h3 style={{ marginTop: '32px', marginBottom: '16px', color: 'var(--text-secondary)' }}>
-                    👨‍💼 Администраторы ({adminUsers.length})
+                    <AdminBadgeIcon size={16} /> {t('admin.administrators')} ({adminUsers.length})
                   </h3>
                   <div className="users-list">
                     {adminUsers.map(user => (
@@ -246,11 +250,11 @@ const AdminPage = () => {
 
           {activeTab === 'orders' && (
             <div className="admin-section">
-              <h2>Все заказы ({regularOrders.length})</h2>
+              <h2>{t('admin.orders')} ({regularOrders.length})</h2>
               
               {regularOrders.length === 0 ? (
                 <div className="empty-state">
-                  <p>Пока нет заказов</p>
+                  <p>{t('admin.noOrdersYet')}</p>
                 </div>
               ) : (
                 <div className="orders-list">
@@ -259,16 +263,16 @@ const AdminPage = () => {
                     return (
                       <div key={order.id} className="order-card">
                         <div className="order-header">
-                          <span className="order-id">Заказ #{order.id}</span>
+                          <span className="order-id">{t('admin.orderNumber')} {order.id}</span>
                           <span className="order-date">
                             {new Date(order.createdAt).toLocaleString('ru-RU')}
                           </span>
                         </div>
                         <div className="order-customer">
-                          👤 {order.fullName} • 📞 {order.phone} • ✉️ {order.email}
+                          <UserIcon size={14} /> {order.fullName} • <PhoneIcon size={14} /> {order.phone} • <EmailIcon size={14} /> {order.email}
                         </div>
                         <div className="order-user-email">
-                          Аккаунт: <strong>{user?.email || 'Неизвестно'}</strong>
+                          {t('admin.account')}: <strong>{user?.email || t('admin.unknown')}</strong>
                         </div>
                         <div className="order-items">
                           {order.items.map((item, idx) => (
@@ -285,7 +289,7 @@ const AdminPage = () => {
                           ))}
                         </div>
                         <div className="order-total">
-                          Итого: <strong>{order.total.toFixed(0)} ₽</strong>
+                          {t('admin.total')}: <strong>{order.total.toFixed(0)} ₽</strong>
                         </div>
                       </div>
                     );
@@ -297,19 +301,19 @@ const AdminPage = () => {
 
           {activeTab === 'stats' && (
             <div className="admin-section">
-              <h2>Статистика (без учёта админов)</h2>
+              <h2>{t('admin.stats')}</h2>
               <div className="stats-grid">
                 <div className="stat-card">
                   <div className="stat-value">{stats.totalUsers || 0}</div>
-                  <div className="stat-label">Пользователей</div>
+                  <div className="stat-label">{t('admin.totalUsers')}</div>
                 </div>
                 <div className="stat-card">
                   <div className="stat-value">{stats.totalOrders || 0}</div>
-                  <div className="stat-label">Заказов</div>
+                  <div className="stat-label">{t('admin.totalOrders')}</div>
                 </div>
                 <div className="stat-card">
                   <div className="stat-value">{(stats.totalRevenue || 0).toFixed(0)} ₽</div>
-                  <div className="stat-label">Общий доход</div>
+                  <div className="stat-label">{t('admin.totalRevenue')}</div>
                 </div>
                 <div className="stat-card">
                   <div className="stat-value">
@@ -317,7 +321,7 @@ const AdminPage = () => {
                       ? ((stats.totalRevenue || 0) / stats.totalOrders).toFixed(0) 
                       : 0} ₽
                   </div>
-                  <div className="stat-label">Средний чек</div>
+                  <div className="stat-label">{t('admin.averageCheck')}</div>
                 </div>
               </div>
             </div>

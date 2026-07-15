@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 import { useLanguage } from '../../context/LanguageContext';
-import { CartIcon, MenuIcon } from '../ui/Icons';
+import { CartIcon, MenuIcon, AdminBadgeIcon } from '../ui/Icons';
 import { formatPrice } from '../../utils/formatPrice';
 import LoginModal from '../LoginModal/LoginModal';
 import CategoriesDropdown from '../CategoriesDropdown/CategoriesDropdown';
@@ -79,7 +79,9 @@ const Header = () => {
           </div>
 
           <div className="header-center">
-            <SearchBar />
+            <div style={{ width: '100%', maxWidth: '100%' }}>
+              <SearchBar />
+            </div>
           </div>
 
           <div className="header-right">
@@ -128,7 +130,7 @@ const Header = () => {
                     </button>
                     {user.role === 'admin' && (
                       <button onClick={handleAdminClick}>
-                        🛠️ Админ-панель
+                        <AdminBadgeIcon size={16} /> {t('admin.panel')}
                       </button>
                     )}
                     <button onClick={handleLogout}>

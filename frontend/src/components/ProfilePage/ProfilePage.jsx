@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useLanguage } from '../../context/LanguageContext';
+import Spinner from '../ui/Spinner/Spinner';
 import { ordersAPI } from '../../services/api';
 import EmptyState from '../ui/EmptyState/EmptyState';
 import PurchaseItem from '../PurchaseItem/PurchaseItem';
+import Button from '../ui/Button/Button';
 import './ProfilePage.css';
 
 const ProfilePage = () => {
@@ -56,13 +58,20 @@ const ProfilePage = () => {
             <h1>{t('profile.title')}</h1>
             <p className="profile-email-display">{user.email}</p>
           </div>
+          <div className="profile-action">
+            <Button variant="secondary" onClick={() => navigate('/password-change')}>
+              {t('profile.changePassword')}
+            </Button>
+          </div>
         </div>
 
         <div className="profile-section">
-          <h2>{t('profile.purchaseHistory')}</h2>
+          <h2 style={{ margin: 0 }}>{t('profile.purchaseHistory')}</h2>
           
           {loading ? (
-            <div className="loading">Загрузка...</div>
+            <div className="loading">
+              <Spinner />
+            </div>
           ) : orders.length === 0 ? (
             <EmptyState 
               title={t('profile.noPurchases')}

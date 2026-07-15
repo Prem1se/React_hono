@@ -9,7 +9,8 @@
   border: 1px solid var(--border-color);
   border-radius: 12px;
   padding: 20px;
-  transition: box-shadow 0.2s;
+  transition: all 0.2s;
+  background: var(--bg-secondary);
 }
 
 .purchase-item:hover {
@@ -28,13 +29,13 @@
 .purchase-date {
   font-size: 14px;
   color: var(--text-secondary);
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .purchase-total {
   font-size: 18px;
   font-weight: 700;
-  color: var(--primary-color);
+  color: var(--white);
 }
 
 .purchase-products {
@@ -54,7 +55,7 @@
   height: 56px;
   object-fit: cover;
   border-radius: 8px;
-  background: var(--bg-color);
+  background: var(--bg-secondary);
 }
 
 .purchase-product-info {
@@ -66,7 +67,7 @@
 
 .purchase-product-name {
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-primary);
 }
 
@@ -78,7 +79,7 @@
 .purchase-product-price {
   font-size: 15px;
   font-weight: 700;
-  color: var(--text-primary);
+  color: var(--white);
   min-width: 80px;
   text-align: right;
 }

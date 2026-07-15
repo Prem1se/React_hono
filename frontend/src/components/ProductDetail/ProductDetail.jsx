@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useLanguage } from '../../context/LanguageContext';
+import Spinner from '../ui/Spinner/Spinner';
 import { productsAPI } from '../../services/api';
 import Button from '../ui/Button/Button';
 import './ProductDetail.css';
@@ -53,7 +54,9 @@ const ProductDetail = () => {
         <button className="back-btn" onClick={() => navigate('/')}>
           ← {t('product.back')}
         </button>
-        <div className="loading">Загрузка товара...</div>
+        <div className="loading">
+          <Spinner />
+        </div>
       </div>
     );
   }
@@ -62,7 +65,7 @@ const ProductDetail = () => {
     return (
       <div className="content-area">
         <div className="error-message">
-          <h2>Товар не найден</h2>
+          <h2>{t('product.notFound')}</h2>
           <p>{error || 'Произошла ошибка при загрузке товара'}</p>
           <Button onClick={() => navigate('/')} variant="primary">
             {t('product.back')}
@@ -85,10 +88,7 @@ const ProductDetail = () => {
           </div>
 
           <div className="product-detail-info">
-            <div className="product-category-tag">{product.category}</div>
             <h1>{product.name}</h1>
-            <div className="product-price-large">{product.price} ₽</div>
-            
             <div className="product-description">
               <h3>{t('product.description')}</h3>
               <p>{product.description}</p>
@@ -96,15 +96,12 @@ const ProductDetail = () => {
 
             <div className="product-specs">
               <div className="spec-item">
-                <span>Артикул:</span>
-                <strong>{product.id}</strong>
-              </div>
-              <div className="spec-item">
-                <span>Наличие:</span>
                 <strong className="in-stock">{t('product.inStock')}</strong>
               </div>
             </div>
 
+            <div className="product-price-large">{product.price} ₽</div>
+            
             <div className="quantity-selector">
               <label>{t('product.quantity')}</label>
               <div className="quantity-controls">

@@ -18,18 +18,23 @@
 }
 
 .btn-edit {
-  color: var(--primary-color);
-  background: #e8f5f0;
+  color: var(--white);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .btn-edit:hover {
-  background: var(--primary-color);
+  background: var(--white);
+  color: var(--bg-color);
+}
+
+.btn-delete:hover {
+  background: var(--error-color);
   color: white;
 }
 
 .btn-delete {
   color: var(--error-color);
-  background: #ffe5e5;
+  background: rgba(239, 68, 68, 0.1);
 }
 
 .btn-delete:hover {

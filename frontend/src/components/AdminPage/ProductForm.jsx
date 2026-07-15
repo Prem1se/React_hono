@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
+import Spinner from '../ui/Spinner/Spinner';
+import { useLanguage } from '../../context/LanguageContext';
 import './ProductForm.css';
 
 const categories = ['certificates', 'accounts', 'software', 'games', 'subscriptions', 'other'];
 
 const ProductForm = ({ product, onSubmit, onCancel }) => {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState({
     name: '',
     price: '',
@@ -14,6 +17,7 @@ const ProductForm = ({ product, onSubmit, onCancel }) => {
   });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (product) {
@@ -47,27 +51,30 @@ const ProductForm = ({ product, onSubmit, onCancel }) => {
     e.preventDefault();
     setError('');
     setSuccess('');
+    setLoading(true);
 
     try {
       await onSubmit(formData);
-      setSuccess(product ? 'Товар обновлён' : 'Товар создан');
+      setSuccess(product ? t('admin.productUpdated') : t('admin.productCreated'));
       resetForm();
       setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
-      setError(err.message || 'Ошибка сохранения');
+      setError(err.message || t('admin.productSaveError'));
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <form className="product-form" onSubmit={handleSubmit}>
-      <h3>{product ? 'Редактировать товар' : 'Новый товар'}</h3>
+      <h3>{product ? t('admin.editProduct') : t('admin.newProduct')}</h3>
       
       {error && <div className="form-error">{error}</div>}
       {success && <div className="form-success">{success}</div>}
 
       <div className="form-row">
         <div className="form-group">
-          <label>Название *</label>
+          <label>{t('admin.productsTableName')}</label>
           <input
             type="text"
             value={formData.name}
@@ -76,7 +83,7 @@ const ProductForm = ({ product, onSubmit, onCancel }) => {
           />
         </div>
         <div className="form-group">
-          <label>Цена (₽) *</label>
+          <label>{t('admin.productsTablePrice')} (₽)</label>
           <input
             type="number"
             value={formData.price}
@@ -90,7 +97,7 @@ const ProductForm = ({ product, onSubmit, onCancel }) => {
 
       <div className="form-row">
         <div className="form-group">
-          <label>Категория *</label>
+          <label>{t('admin.productsTableCategory')}</label>
           <select
             value={formData.category}
             onChange={(e) => setFormData({ ...formData, category: e.target.value })}
@@ -102,7 +109,7 @@ const ProductForm = ({ product, onSubmit, onCancel }) => {
           </select>
         </div>
         <div className="form-group">
-          <label>Остаток на складе</label>
+          <label>{t('admin.productsTableStock')}</label>
           <input
             type="number"
             value={formData.stock}
@@ -113,7 +120,7 @@ const ProductForm = ({ product, onSubmit, onCancel }) => {
       </div>
 
       <div className="form-group">
-        <label>URL изображения</label>
+        <label>{t('admin.productsTableImage')}</label>
         <input
           type="url"
           value={formData.image}
@@ -123,7 +130,7 @@ const ProductForm = ({ product, onSubmit, onCancel }) => {
       </div>
 
       <div className="form-group">
-        <label>Описание</label>
+        <label>{t('admin.productsDescription')}</label>
         <textarea
           value={formData.description}
           onChange={(e) => setFormData({ ...formData, description: e.target.value })}
@@ -132,11 +139,17 @@ const ProductForm = ({ product, onSubmit, onCancel }) => {
       </div>
 
       <div className="form-actions">
-        <button type="submit" className="btn-submit">
-          {product ? 'Сохранить' : 'Создать'}
+        <button type="submit" className="btn-submit" disabled={loading}>
+          {loading ? (
+            <div className="button-spinner">
+              <Spinner size="small" />
+            </div>
+          ) : (
+            product ? t('admin.save') : t('admin.create')
+          )}
         </button>
         <button type="button" className="btn-cancel" onClick={onCancel}>
-          Отмена
+          {t('admin.cancel')}
         </button>
       </div>
     </form>

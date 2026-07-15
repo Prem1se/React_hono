@@ -1,7 +1,10 @@
 import { formatPrice } from '../../utils/formatPrice';
+import { useLanguage } from '../../context/LanguageContext';
 import './ProductCard.css';
 
 const ProductCard = ({ product, onClick }) => {
+  const { t } = useLanguage();
+  
   return (
     <div className="product-card" onClick={() => onClick(product)}>
       <div className="product-image">
@@ -11,7 +14,7 @@ const ProductCard = ({ product, onClick }) => {
         <h3>{product.name}</h3>
         <p className="product-price">{formatPrice(product.price)}</p>
         {product.sales && (
-          <p className="product-sales">🔥 {product.sales} покупок</p>
+          <p className="product-sales">{t('product.sales')} {product.sales}</p>
         )}
       </div>
     </div>

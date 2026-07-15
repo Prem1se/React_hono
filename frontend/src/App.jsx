@@ -11,6 +11,7 @@ import ProfilePage from './components/ProfilePage/ProfilePage';
 import CategoryPage from './components/CategoryPage/CategoryPage';
 import AdminPage from './components/AdminPage/AdminPage';
 import ForgotPassword from './components/ForgotPassword/ForgotPassword';
+import PasswordChange from './components/PasswordChange/PasswordChange';
 import Footer from './components/Footer/Footer';
 import './App.css';
 
@@ -28,6 +29,7 @@ function AppContent() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={user ? <Checkout /> : <Navigate to="/cart" />} />
           <Route path="/profile" element={user ? <ProfilePage /> : <Navigate to="/" />} />
+          <Route path="/password-change" element={user ? <PasswordChange /> : <Navigate to="/" />} />
           <Route path="/admin" element={user?.role === 'admin' ? <AdminPage /> : <Navigate to="/" />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="*" element={<Navigate to="/" />} />

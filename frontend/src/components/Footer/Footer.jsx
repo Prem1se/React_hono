@@ -8,8 +8,8 @@ const Footer = () => {
     <footer className="footer">
       <div className="footer-inner">
         <div className="footer-section">
-          <h3>SKAM</h3>
-          <p>Цифровые товары и услуги</p>
+          <h3>{t('footer.brand')}</h3>
+          <p>{t('footer.subtitle')}</p>
         </div>
 
         <div className="footer-section">
@@ -36,14 +36,14 @@ const Footer = () => {
         <div className="footer-section">
           <h4>{t('footer.support')}</h4>
           <ul>
-            <li>support@skam.com</li>
-            <li>Telegram: @skam_support</li>
+            <li>{t('footer.email')}</li>
+            <li>{t('footer.telegram')}</li>
           </ul>
         </div>
       </div>
 
       <div className="footer-bottom">
-        <p>2025 SKAM. Все права защищены.</p>
+        <p>{t('footer.copyright')}</p>
       </div>
     </footer>
   );

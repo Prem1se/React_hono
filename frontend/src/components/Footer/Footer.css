@@ -16,13 +16,11 @@
 
 .footer-section h3 {
   font-size: 24px;
-  font-weight: 800;
-  letter-spacing: 1.5px;
+  font-weight: 700;
+  letter-spacing: 1px;
   margin-bottom: 12px;
-  background: linear-gradient(135deg, #008060 0%, #00a082 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--white);
+  text-shadow: none;
 }
 
 .footer-section h3 + p {
@@ -34,7 +32,7 @@
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 16px;
-  color: #fff;
+  color: var(--white);
 }
 
 .footer-section ul {
@@ -52,11 +50,11 @@
 }
 
 .footer-section li:hover {
-  color: var(--primary-color);
+  color: var(--white);
 }
 
 .footer-bottom {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid #333;
   padding: 20px 24px;
   text-align: center;
 }

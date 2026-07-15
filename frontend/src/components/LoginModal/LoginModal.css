@@ -12,16 +12,18 @@
 .login-form .form-group input {
   width: 100%;
   padding: 12px 14px;
+  background: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-radius: 8px;
   font-size: 14px;
   outline: none;
-  transition: border-color 0.2s;
+  transition: all 0.2s;
   font-family: inherit;
+  color: var(--text-primary);
 }
 
 .login-form .form-group input:focus { 
-  border-color: var(--primary-color); 
+  border-color: var(--white); 
 }
 
 .forgot-password-link {
@@ -29,7 +31,7 @@
   text-align: right;
   background: none;
   border: none;
-  color: var(--primary-color);
+  color: var(--white);
   cursor: pointer;
   font-size: 13px;
   font-weight: 500;
@@ -41,7 +43,7 @@
 }
 
 .forgot-password-link:hover {
-  color: var(--primary-dark);
+  color: var(--white);
   text-decoration: underline;
 }
 
@@ -55,7 +57,7 @@
 .switch-btn {
   background: none;
   border: none;
-  color: var(--primary-color);
+  color: var(--white);
   cursor: pointer;
   font-weight: 600;
   margin-left: 4px;
@@ -65,4 +67,10 @@
 
 .switch-btn:hover {
   text-decoration: underline;
+}
+
+.button-spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

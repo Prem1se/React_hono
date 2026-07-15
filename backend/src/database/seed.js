@@ -63,7 +63,7 @@ export const seedProducts = async (db) => {
       name: 'Windows 11 Pro',
       price: 899,
       category: 'software',
-      image: '',
+      image: 'https://upload.wikimedia.org/wikipedia/en/5/5f/Windows_11_Pro_logo.svg',
       description: 'Лицензионный ключ Windows 11 Pro.',
       stock: 100
     },
@@ -71,7 +71,7 @@ export const seedProducts = async (db) => {
       name: 'Microsoft Office 2021',
       price: 1299,
       category: 'software',
-      image: '',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/4/4e/Microsoft_Office_2021_logo.svg',
       description: 'Полный пакет Microsoft Office.',
       stock: 75
     },
@@ -79,7 +79,7 @@ export const seedProducts = async (db) => {
       name: 'Adobe Photoshop CC',
       price: 799,
       category: 'software',
-      image: '',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/5/58/Adobe_Photoshop_CC_logo.svg',
       description: 'Adobe Photoshop CC на 1 год.',
       stock: 60
     },
@@ -88,7 +88,7 @@ export const seedProducts = async (db) => {
       name: 'Cyberpunk 2077 (Steam Key)',
       price: 1999,
       category: 'games',
-      image: '',
+      image: 'https://upload.wikimedia.org/wikipedia/en/9/9d/Cyberpunk_2077_box_art.jpg',
       description: 'Ключ активации Cyberpunk 2077 для Steam.',
       stock: 40
     },
@@ -96,7 +96,7 @@ export const seedProducts = async (db) => {
       name: 'GTA V Premium Edition',
       price: 1499,
       category: 'games',
-      image: '',
+      image: 'https://upload.wikimedia.org/wikipedia/en/5/57/GTA_V_Boxart.jpg',
       description: 'Grand Theft Auto V Premium Edition.',
       stock: 55
     },
@@ -104,7 +104,7 @@ export const seedProducts = async (db) => {
       name: 'Minecraft Java Edition',
       price: 1299,
       category: 'games',
-      image: '',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/6/60/Minecraft_box_art.jpg',
       description: 'Minecraft Java Edition.',
       stock: 80
     },
@@ -113,7 +113,7 @@ export const seedProducts = async (db) => {
       name: 'Netflix Premium (1 месяц)',
       price: 499,
       category: 'subscriptions',
-      image: '',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/4/40/Netflix_2015_logo.svg',
       description: 'Подписка Netflix Premium на 1 месяц. 4K качество.',
       stock: 100
     },
@@ -121,7 +121,7 @@ export const seedProducts = async (db) => {
       name: 'Spotify Premium (1 месяц)',
       price: 199,
       category: 'subscriptions',
-      image: '',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg',
       description: 'Spotify Premium на 1 месяц. Без рекламы.',
       stock: 150
     },
@@ -129,7 +129,7 @@ export const seedProducts = async (db) => {
       name: 'Discord Nitro (1 месяц)',
       price: 399,
       category: 'subscriptions',
-      image: '',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/5/53/Discord_logo.svg',
       description: 'Discord Nitro на 1 месяц.',
       stock: 120
     },
@@ -137,7 +137,7 @@ export const seedProducts = async (db) => {
       name: 'YouTube Premium (1 месяц)',
       price: 299,
       category: 'subscriptions',
-      image: '',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/a/a0/YouTube_Premium_logo.svg',
       description: 'YouTube Premium без рекламы.',
       stock: 90
     },
@@ -146,7 +146,7 @@ export const seedProducts = async (db) => {
       name: 'Антивирус Kaspersky (1 год)',
       price: 1499,
       category: 'other',
-      image: '',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/2/2b/Kaspersky_Lab_logo.svg',
       description: 'Kaspersky Internet Security на 1 год.',
       stock: 70
     },
@@ -154,7 +154,7 @@ export const seedProducts = async (db) => {
       name: 'Облачное хранилище 1TB (1 год)',
       price: 999,
       category: 'other',
-      image: '',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/6/6d/Google_Drive_logo.svg',
       description: 'Облачное хранилище 1TB на 1 год.',
       stock: 100
     }

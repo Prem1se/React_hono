@@ -10,14 +10,18 @@
 }
 
 .modal-content {
-  background: #fff;
-  border-radius: 16px;
+  background: var(--bg-secondary);
+  border-radius: 8px;
   padding: 32px;
   width: 100%;
   max-width: 400px;
   position: relative;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  animation: modalSlideIn 0.3s ease-out;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-color);
+}
+
+.modal-close:hover {
+  color: var(--white);
 }
 
 @keyframes modalSlideIn {
@@ -51,4 +55,5 @@
   font-size: 24px;
   margin-bottom: 24px;
   font-weight: 700;
+  color: var(--text-primary);
 }

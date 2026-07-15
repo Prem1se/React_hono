@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 import { useLanguage } from '../../context/LanguageContext';
+import Spinner from '../ui/Spinner/Spinner';
 import { ordersAPI } from '../../services/api';
 import LoginModal from '../LoginModal/LoginModal';
 import Button from '../ui/Button/Button';
@@ -119,7 +120,9 @@ const Checkout = () => {
   if (cartItems.length === 0) {
     return (
       <div className="content-area">
-        <div className="loading">Перенаправление...</div>
+        <div className="loading">
+          <Spinner />
+        </div>
       </div>
     );
   }

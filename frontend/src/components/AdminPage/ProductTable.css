@@ -1,6 +1,6 @@
 ﻿.product-table {
-  background: var(--white);
-  border-radius: 12px;
+  background: var(--bg-secondary);
+  border-radius: 8px;
   overflow: hidden;
   border: 1px solid var(--border-color);
 }
@@ -11,7 +11,7 @@
 }
 
 .product-table th {
-  background: var(--bg-color);
+  background: var(--bg-secondary);
   padding: 12px 16px;
   text-align: left;
   font-size: 13px;
@@ -25,6 +25,7 @@
   font-size: 14px;
   vertical-align: middle;
   height: 60px;
+  color: var(--text-primary);
 }
 
 .product-table tr {
@@ -36,7 +37,7 @@
 }
 
 .product-table tr:hover {
-  background: var(--bg-color);
+  background: #1a1a1a;
 }
 
 .product-thumb {
@@ -44,8 +45,22 @@
   height: 48px;
   object-fit: contain;
   border-radius: 6px;
-  background: #f5f5f5;
+  background: var(--bg-secondary);
   display: block;
+  border: 1px solid var(--border-color);
+}
+
+.product-thumb-empty {
+  width: 48px;
+  height: 48px;
+  background: var(--bg-secondary);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  font-size: 12px;
+  border: 1px solid var(--border-color);
 }
 
 @media (max-width: 768px) {

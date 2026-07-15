@@ -1,11 +1,10 @@
 ﻿.cart-summary {
-  background: var(--white);
-  border-radius: 12px;
+  background: var(--bg-color);
+  border-radius: 8px;
   padding: 24px;
   height: fit-content;
   position: sticky;
   top: 88px;
-  box-shadow: var(--shadow-sm);
   border: 1px solid var(--border-color);
 }
 
@@ -32,12 +31,13 @@
   border-top: 2px solid var(--border-color);
   font-size: 20px;
   font-weight: 700;
+  color: var(--white);
 }
 
 .checkout-btn {
   width: 100%;
-  background: var(--primary-color);
-  color: white;
+  background: var(--white);
+  color: var(--bg-color);
   border: none;
   padding: 16px;
   border-radius: 8px;
@@ -49,9 +49,8 @@
 }
 
 .checkout-btn:hover {
-  background: var(--primary-dark);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  background: var(--white);
+  color: var(--bg-color);
 }
 
 

@@ -4,10 +4,9 @@
 }
 
 .checkout-form {
-  background: var(--white);
-  border-radius: 12px;
+  background: var(--bg-secondary);
+  border-radius: 8px;
   padding: 32px;
-  box-shadow: var(--shadow-sm);
   border: 1px solid var(--border-color);
 }
 
@@ -25,8 +24,9 @@
 .order-review {
   margin: 24px 0;
   padding: 20px;
-  background: var(--bg-color);
+  background: #1a1a1a;
   border-radius: 8px;
+  border: 1px solid var(--border-color);
 }
 
 .review-items {
@@ -38,6 +38,7 @@
   justify-content: space-between;
   padding: 8px 0;
   font-size: 14px;
+  color: var(--text-secondary);
 }
 
 .review-total {
@@ -47,12 +48,13 @@
   border-top: 1px solid var(--border-color);
   font-weight: 700;
   font-size: 16px;
+  color: var(--white);
 }
 
 .pay-btn {
   width: 100%;
-  background: var(--primary-color);
-  color: white;
+  background: var(--white);
+  color: var(--bg-color);
   border: none;
   padding: 18px;
   border-radius: 8px;
@@ -65,9 +67,8 @@
 }
 
 .pay-btn:hover:not(:disabled) {
-  background: var(--primary-dark);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  background: var(--white);
+  color: var(--bg-color);
 }
 
 .pay-btn:disabled {
@@ -79,16 +80,16 @@
 .success-message {
   text-align: center;
   padding: 80px 20px;
-  background: var(--white);
-  border-radius: 12px;
-  box-shadow: var(--shadow-sm);
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
 }
 
 .success-icon {
   width: 80px;
   height: 80px;
-  background: var(--success-color);
-  color: white;
+  background: var(--white);
+  color: var(--bg-color);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -107,7 +108,7 @@
 .success-message h1 {
   font-size: 32px;
   margin-bottom: 16px;
-  color: var(--success-color);
+  color: var(--white);
 }
 
 .success-message p {

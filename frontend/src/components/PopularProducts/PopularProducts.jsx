@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { productsAPI } from '../../services/api';
 import ProductCard from '../ProductCard/ProductCard';
+import Spinner from '../ui/Spinner/Spinner';
 import { useLanguage } from '../../context/LanguageContext';
 
 const PopularProducts = () => {
@@ -43,7 +44,9 @@ const PopularProducts = () => {
           <h1>{t('home.title')}</h1>
           <p>{t('home.subtitle')}</p>
         </div>
-        <div className="loading">Загрузка товаров...</div>
+        <div className="loading">
+          <Spinner />
+        </div>
       </div>
     );
   }
@@ -75,9 +78,9 @@ const PopularProducts = () => {
       {/* Рекомендованные товары */}
       {popularProducts.length > 0 && (
         <div className="section-card">
-          <div className="page-header">
-            <h1>Рекомендованные товары</h1>
-          </div>
+        <div className="page-header">
+          <h1>{t('home.popularProducts')}</h1>
+        </div>
 
           <div className="products-grid">
             {popularProducts.map(product => (
@@ -94,7 +97,7 @@ const PopularProducts = () => {
       {/* Все товары */}
       <div className="section-card">
         <div className="page-header">
-          <h1>Все товары</h1>
+          <h1>{t('home.allProducts')}</h1>
         </div>
 
         <div className="products-grid">

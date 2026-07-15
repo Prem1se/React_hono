@@ -50,8 +50,14 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
+  const updatePassword = async (currentPassword, newPassword) => {
+    await authAPI.updatePassword(currentPassword, newPassword);
+    const updatedUser = await authAPI.me();
+    setUser(updatedUser);
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout, updatePassword }}>
       {children}
     </AuthContext.Provider>
   );
