@@ -19,7 +19,7 @@ const tabs = [
 const ProductTabs = () => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
-  const { t, getCategoryName } = useLanguage();
+  const { t, getCategoryName, language } = useLanguage();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('all');
@@ -37,7 +37,7 @@ const ProductTabs = () => {
       }
     };
     fetch();
-  }, []);
+  }, [language]);
 
   const filtered = useMemo(() =>
     activeTab === 'all'

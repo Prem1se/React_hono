@@ -126,7 +126,7 @@ const ProductForm = ({ product, onSubmit, onCancel, categoriesList = [] }) => {
           />
         </div>
         <div className="form-group">
-          <label>Старая цена (₽)</label>
+          <label>{t('admin.oldPrice')} (₽)</label>
           <input
             type="number"
             value={formData.oldPrice}
@@ -145,7 +145,7 @@ const ProductForm = ({ product, onSubmit, onCancel, categoriesList = [] }) => {
             onChange={(e) => setFormData({ ...formData, categoryId: e.target.value })}
             required
           >
-            <option value="">Выберите категорию</option>
+            <option value="">{t('admin.selectCategory')}</option>
             {categories.map(cat => (
               <option key={cat.slug} value={cat.slug}>{currentCategoryName(cat.slug)}</option>
             ))}
@@ -173,7 +173,7 @@ const ProductForm = ({ product, onSubmit, onCancel, categoriesList = [] }) => {
       </div>
 
       <div className="form-group">
-        <label>Описание (RU)</label>
+        <label>{t('admin.descriptionRu')}</label>
         <textarea
           value={formData.descriptionRu}
           onChange={(e) => setFormData({ ...formData, descriptionRu: e.target.value })}
@@ -182,7 +182,7 @@ const ProductForm = ({ product, onSubmit, onCancel, categoriesList = [] }) => {
       </div>
 
       <div className="form-group">
-        <label>Description (EN)</label>
+        <label>{t('admin.descriptionEn')}</label>
         <textarea
           value={formData.descriptionEn}
           onChange={(e) => setFormData({ ...formData, descriptionEn: e.target.value })}

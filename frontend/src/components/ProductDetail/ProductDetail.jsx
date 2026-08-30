@@ -50,7 +50,7 @@ const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addToCart } = useCart();
-  const { getCategoryName } = useLanguage();
+  const { getCategoryName, t, language } = useLanguage();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -66,13 +66,13 @@ const ProductDetail = () => {
         setError(null);
       } catch (err) {
         console.error(err);
-        setError('Товар не найден');
+        setError(t('product.notFound'));
       } finally {
         setLoading(false);
       }
     };
     fetch();
-  }, [id]);
+  }, [id, language]);
 
   const handleAddToCart = useCallback(async () => {
     try {
@@ -107,7 +107,7 @@ const ProductDetail = () => {
   if (loading) {
     return (
       <div className="content-area container product-detail-page">
-        <button className="back-btn" onClick={() => navigate(-1)}>← Назад</button>
+        <button className="back-btn" onClick={() => navigate(-1)}>← {t('product.back')}</button>
         <div className="loading"><Spinner /></div>
       </div>
     );
@@ -116,13 +116,13 @@ const ProductDetail = () => {
   if (error || !product) {
     return (
       <div className="content-area container product-detail-page">
-        <button className="back-btn" onClick={() => navigate(-1)}>← Назад</button>
+        <button className="back-btn" onClick={() => navigate(-1)}>← {t('product.back')}</button>
         <div className="detail-error">
           <div className="detail-error-icon">🔍</div>
-          <h2>Товар не найден</h2>
+          <h2>{t('product.notFound')}</h2>
           <p>Возможно, он был удалён или никогда не существовал.</p>
           <button className="continue-shopping-btn" onClick={() => navigate('/')}>
-            На главную
+            {t('home.seeAll')}
           </button>
         </div>
       </div>
@@ -131,7 +131,7 @@ const ProductDetail = () => {
 
   return (
     <div className="content-area container product-detail-page">
-      <button className="back-btn" onClick={() => navigate(-1)}>← Назад</button>
+      <button className="back-btn" onClick={() => navigate(-1)}>← {t('product.back')}</button>
 
       <div className="detail-card">
         {/* Левая часть — изображение */}
@@ -147,7 +147,7 @@ const ProductDetail = () => {
           <div className="detail-quick-info">
             <div className="quick-info-item">
               <div>
-                <span className="qi-label">Категория</span>
+                <span className="qi-label">{t('header.catalog')}</span>
                 <span className="qi-value">{categoryName}</span>
               </div>
             </div>
@@ -159,7 +159,7 @@ const ProductDetail = () => {
             </div>
             <div className="quick-info-item">
               <div>
-                <span className="qi-label">Гарантия</span>
+                <span className="qi-label">{t('product.warranty')}</span>
                 <span className="qi-value">{cfg.warranty}</span>
               </div>
             </div>
@@ -185,25 +185,25 @@ const ProductDetail = () => {
           {/* Статус наличия */}
           <div className="detail-stock">
             <span className="stock-dot"></span>
-            <span>В наличии — в наличии ({product.stock} шт.)</span>
+            <span>{t('product.stockStatus')} — {t('product.stockStatus')} ({product.stock} шт.)</span>
           </div>
 
           {/* Описание */}
           <div className="detail-description">
-            <h3>Описание</h3>
+            <h3>{t('product.detailDescription')}</h3>
             <p>{product.description}</p>
           </div>
 
           {/* Характеристики */}
           <div className="detail-specs">
-            <h3>Характеристики</h3>
+            <h3>{t('product.specs')}</h3>
             <div className="specs-grid">
               <div className="spec-row">
-                <span className="spec-label">Платформа</span>
+                <span className="spec-label">{t('product.platform')}</span>
                 <span className="spec-value">{cfg.platform}</span>
               </div>
               <div className="spec-row">
-                <span className="spec-label">Регион</span>
+                <span className="spec-label">{t('product.region')}</span>
                 <span className="spec-value">{cfg.region}</span>
               </div>
               <div className="spec-row">
@@ -211,7 +211,7 @@ const ProductDetail = () => {
                 <span className="spec-value">{cfg.delivery}</span>
               </div>
               <div className="spec-row">
-                <span className="spec-label">Гарантия</span>
+                <span className="spec-label">{t('product.warranty')}</span>
                 <span className="spec-value">{cfg.warranty}</span>
               </div>
             </div>
@@ -220,7 +220,7 @@ const ProductDetail = () => {
           {/* Количество + кнопка */}
           <div className="detail-actions">
             <div className="quantity-selector">
-              <label>Количество</label>
+              <label>{t('product.qtyLabel')}</label>
               <div className="quantity-controls">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -239,7 +239,7 @@ const ProductDetail = () => {
               onClick={handleAddToCart}
               disabled={product.stock === 0}
             >
-              {added ? '✓ Добавлено' : 'Добавить в корзину'}
+              {added ? t('product.addedBtn') : t('product.addToCartBtn')}
             </button>
           </div>
         </div>

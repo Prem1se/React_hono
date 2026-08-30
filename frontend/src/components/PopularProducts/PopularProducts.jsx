@@ -10,7 +10,7 @@ import FAQSection from '../FAQSection/FAQSection';
 import { useLanguage } from '../../context/LanguageContext';
 
 const PopularProducts = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -22,14 +22,14 @@ const PopularProducts = () => {
         setError(null);
       } catch (err) {
         console.error('Ошибка загрузки товаров:', err);
-        setError(err.message || 'Не удалось загрузить товары');
+        setError(err.message || t('popular.fetchError'));
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, []);
+  }, [language]);
 
   if (loading) {
     return (

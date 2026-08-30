@@ -21,7 +21,7 @@ const categoryIcons = {
 const CategoryPage = () => {
   const navigate = useNavigate();
   const { category } = useParams();
-  const { t, getCategoryName } = useLanguage();
+  const { t, getCategoryName, language } = useLanguage();
   const { addToCart } = useCart();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -49,7 +49,7 @@ const CategoryPage = () => {
     if (category) {
       fetchProducts();
     }
-  }, [category]);
+  }, [category, language]);
 
   const filteredProducts = useMemo(() => {
     let result = products.filter(p => {
@@ -104,8 +104,8 @@ const CategoryPage = () => {
   const hasActiveFilters = sortBy !== 'default' || priceRange.min || priceRange.max;
   const icon = category === 'all' ? '🛒' : (categoryIcons[category] || '📦');
   const categoryLabel = category === 'all' ? 'all' : category;
-  const categoryName = category === 'all' ? 'Все товары' : getCategoryName(category);
-  const categoryDescription = category === 'all' ? 'Полный каталог товаров' : t(`categories.${category}.description`);
+  const categoryName = category === 'all' ? t('home.allProductsCategory') : getCategoryName(category);
+  const categoryDescription = category === 'all' ? t('home.allProductsCategoryDesc') : t(`categories.${category}.description`);
 
   if (loading) {
     return (
@@ -119,7 +119,7 @@ const CategoryPage = () => {
     <div className="content-area container category-page">
       {/* Breadcrumb */}
       <div className="category-breadcrumb">
-        <button onClick={() => navigate('/')}>Главная</button>
+        <button onClick={() => navigate('/')}>{t('home.breadcrumbHome')}</button>
         <span className="breadcrumb-sep">/</span>
         <span className="breadcrumb-current">{categoryName}</span>
       </div>
@@ -133,7 +133,7 @@ const CategoryPage = () => {
         </div>
         <div className="category-hero-count">
           <span className="count-number">{products.length}</span>
-          <span className="count-label">товаров</span>
+          <span className="count-label">{t('home.productsCount')}</span>
         </div>
       </div>
 
@@ -142,22 +142,22 @@ const CategoryPage = () => {
         <div className="toolbar-left">
           {/* Мобильная кнопка фильтров */}
           <button className="filter-toggle-btn" onClick={() => setShowFilters(!showFilters)}>
-            {showFilters ? '✕ Закрыть' : '⚙ Фильтры'}
+            {showFilters ? t('filterToggleClose') : t('filterToggleOpen')}
           </button>
 
           {/* Сортировка */}
           <div className="sort-dropdown">
-            <label>Сортировка:</label>
+            <label>{t('sortLabel')}</label>
             <select
               value={sortBy}
               onChange={(e) => { setSortBy(e.target.value); setCurrentPage(1); }}
               className="sort-select"
             >
-              <option value="default">По умолчанию</option>
-              <option value="price-asc">Сначала дешёвые</option>
-              <option value="price-desc">Сначала дорогие</option>
-              <option value="name-asc">По названию А-Я</option>
-              <option value="name-desc">По названию Я-А</option>
+              <option value="default">{t('sortDefault')}</option>
+              <option value="price-asc">{t('sortPriceAsc')}</option>
+              <option value="price-desc">{t('sortPriceDesc')}</option>
+              <option value="name-asc">{t('sortNameAsc')}</option>
+              <option value="name-desc">{t('sortNameDesc')}</option>
             </select>
           </div>
 
@@ -167,7 +167,7 @@ const CategoryPage = () => {
               type="number"
               value={priceRange.min}
               onChange={(e) => { setPriceRange({ ...priceRange, min: e.target.value }); setCurrentPage(1); }}
-              placeholder="От"
+              placeholder={t('filterMin')}
               min="0"
               className="price-input"
             />
@@ -176,7 +176,7 @@ const CategoryPage = () => {
               type="number"
               value={priceRange.max}
               onChange={(e) => { setPriceRange({ ...priceRange, max: e.target.value }); setCurrentPage(1); }}
-              placeholder="До"
+              placeholder={t('filterMax')}
               min="0"
               className="price-input"
             />
@@ -186,11 +186,11 @@ const CategoryPage = () => {
         <div className="toolbar-right">
           {hasActiveFilters && (
             <button className="reset-filters-btn" onClick={resetFilters}>
-              ✕ Сбросить
+              {t('filterResetBtn')}
             </button>
           )}
           <span className="results-count">
-            Найдено: <strong>{filteredProducts.length}</strong>
+            {t('filterFound')}: <strong>{filteredProducts.length}</strong>
           </span>
         </div>
       </div>
@@ -199,10 +199,10 @@ const CategoryPage = () => {
       {currentProducts.length === 0 ? (
         <div className="category-empty">
           <div className="category-empty-icon">🔍</div>
-          <p>Товары не найдены</p>
+          <p>{t('productsNotFound')}</p>
           {hasActiveFilters && (
             <button className="reset-filters-btn" onClick={resetFilters}>
-              Сбросить фильтры
+              {t('filterResetBtn')}
             </button>
           )}
         </div>

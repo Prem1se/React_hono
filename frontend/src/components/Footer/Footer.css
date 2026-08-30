@@ -2,7 +2,7 @@
   background: var(--bg-surface);
   border-top: 1px solid var(--border);
   padding: 64px 0 32px;
-  margin-top: 0;
+  margin-top: auto;
   position: relative;
 }
 

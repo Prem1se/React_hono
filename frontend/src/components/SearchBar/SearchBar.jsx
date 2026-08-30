@@ -9,7 +9,7 @@ import './SearchBar.css';
 
 const SearchBar = () => {
   const navigate = useNavigate();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -38,7 +38,7 @@ const SearchBar = () => {
 
     const timeoutId = setTimeout(searchProducts, 300);
     return () => clearTimeout(timeoutId);
-  }, [query]);
+  }, [query, language]);
 
   const handleProductClick = (product) => {
     setQuery('');

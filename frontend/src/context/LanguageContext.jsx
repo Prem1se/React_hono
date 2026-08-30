@@ -24,6 +24,10 @@ const translations = {
       allProducts: 'Все товары',
       allDescription: 'Полный каталог наших товаров',
       seeAll: 'Смотреть все',
+      allProductsCategory: 'Все товары',
+      allProductsCategoryDesc: 'Полный каталог товаров',
+      breadcrumbHome: 'Главная',
+      productsCount: 'товаров',
     },
     hero: {
       badge: 'Система активна • 24/7',
@@ -50,6 +54,20 @@ const translations = {
     filterOf: 'из',
     filterSortAsc: '↑',
     filterSortDesc: '↓',
+    filterToggle: 'Фильтры',
+    filterToggleClose: '✕ Закрыть',
+    filterToggleOpen: '⚙ Фильтры',
+    filterReset: 'Сбросить',
+    filterResetBtn: '✕ Сбросить',
+    filterMin: 'От',
+    filterMax: 'До',
+    sortLabel: 'Сортировка:',
+    sortDefault: 'По умолчанию',
+    sortPriceAsc: 'Сначала дешёвые',
+    sortPriceDesc: 'Сначала дорогие',
+    sortNameAsc: 'По названию А-Я',
+    sortNameDesc: 'По названию Я-А',
+    productsNotFound: 'Товары не найдены',
     admin: {
       panel: 'Админ-панель',
       products: 'Товары',
@@ -96,6 +114,10 @@ const translations = {
       role: 'Роль',
       unknown: 'Неизвестно',
       productsDescription: 'Описание',
+      oldPrice: 'Старая цена',
+      selectCategory: 'Выберите категорию',
+      descriptionRu: 'Описание (RU)',
+      descriptionEn: 'Description (EN)',
     },
     cart: {
       title: 'Корзина',
@@ -104,6 +126,7 @@ const translations = {
       continueShopping: 'Продолжить покупки',
       total: 'Итого',
       checkout: 'Оформить заказ',
+      items: 'Товары',
     },
     product: {
       addToCart: 'Добавить в корзину',
@@ -114,6 +137,19 @@ const translations = {
       back: 'Назад к товарам',
       notFound: 'Товар не найден',
       sales: '🔥',
+      platform: 'Платформа',
+      duration: 'Срок',
+      region: 'Регион',
+      warranty: 'Гарантия',
+      buy: 'В корзину',
+      detailDescription: 'Описание',
+      specs: 'Характеристики',
+      stockStatus: 'В наличии',
+      qtyLabel: 'Количество',
+      addToCartBtn: 'Добавить в корзину',
+      addedBtn: '✓ Добавлено',
+      checkoutReview: 'Товары',
+      stockCount: 'В наличии',
     },
     profile: {
       title: 'Профиль',
@@ -154,6 +190,9 @@ const translations = {
       fillAllFields: 'Заполните все поля',
       invalidEmail: 'Некорректный email',
       cartEmpty: 'Корзина пуста',
+      fullNamePlaceholder: 'Иванов Иван Иванович',
+      phonePlaceholder: '+7 (999) 999-99-99',
+      emailPlaceholder: 'example@mail.ru',
     },
     categories: {
       certificates: { name: 'Сертификаты', description: 'VPN, прокси и другие' },
@@ -171,6 +210,7 @@ const translations = {
       errorTitle: 'Ошибка загрузки',
       checkBackend: 'Проверьте, что бэкенд запущен: http://localhost:3000',
       tryAgain: 'Попробовать снова',
+      fetchError: 'Не удалось загрузить товары',
     },
     advantages: {
       title: 'Почему выбирают нас',
@@ -247,6 +287,10 @@ const translations = {
       allProducts: 'All Products',
       allDescription: 'Full catalog of our products',
       seeAll: 'View all',
+      allProductsCategory: 'All Products',
+      allProductsCategoryDesc: 'Full product catalog',
+      breadcrumbHome: 'Home',
+      productsCount: 'products',
     },
     hero: {
       badge: 'System active • 24/7',
@@ -274,6 +318,20 @@ const translations = {
     filterOf: 'of',
     filterSortAsc: '↑',
     filterSortDesc: '↓',
+    filterToggle: 'Filters',
+    filterToggleClose: '✕ Close',
+    filterToggleOpen: '⚙ Filters',
+    filterReset: 'Reset',
+    filterResetBtn: '✕ Reset',
+    filterMin: 'Min',
+    filterMax: 'Max',
+    sortLabel: 'Sort:',
+    sortDefault: 'Default',
+    sortPriceAsc: 'Price: Low to High',
+    sortPriceDesc: 'Price: High to Low',
+    sortNameAsc: 'Name: A-Z',
+    sortNameDesc: 'Name: Z-A',
+    productsNotFound: 'Products not found',
     passwordChanged: 'Password successfully changed',
     admin: {
       panel: 'Admin Panel',
@@ -321,6 +379,10 @@ const translations = {
       role: 'Role',
       unknown: 'Unknown',
       productsDescription: 'Description',
+      oldPrice: 'Old Price',
+      selectCategory: 'Select category',
+      descriptionRu: 'Description (EN)',
+      descriptionEn: 'Description (EN)',
     },
     cart: {
       title: 'Shopping Cart',
@@ -329,6 +391,7 @@ const translations = {
       continueShopping: 'Continue Shopping',
       total: 'Total',
       checkout: 'Checkout',
+      items: 'Items',
     },
     product: {
       addToCart: 'Add to Cart',
@@ -339,6 +402,19 @@ const translations = {
       back: 'Back to Products',
       notFound: 'Product not found',
       sales: '🔥',
+      platform: 'Platform',
+      duration: 'Duration',
+      region: 'Region',
+      warranty: 'Warranty',
+      buy: 'Add to Cart',
+      detailDescription: 'Description',
+      specs: 'Specifications',
+      stockStatus: 'In Stock',
+      qtyLabel: 'Quantity',
+      addToCartBtn: 'Add to Cart',
+      addedBtn: '✓ Added',
+      checkoutReview: 'Items',
+      stockCount: 'In stock',
     },
     profile: {
       title: 'Profile',
@@ -379,6 +455,9 @@ const translations = {
       fillAllFields: 'Fill in all fields',
       invalidEmail: 'Invalid email',
       cartEmpty: 'Cart is empty',
+      fullNamePlaceholder: 'John Doe',
+      phonePlaceholder: '+1 (555) 000-0000',
+      emailPlaceholder: 'example@mail.com',
     },
     categories: {
       certificates: { name: 'Certificates', description: 'VPN, proxy and others' },
@@ -396,6 +475,7 @@ const translations = {
       errorTitle: 'Error loading',
       checkBackend: 'Check that the backend is running: http://localhost:3000',
       tryAgain: 'Try again',
+      fetchError: 'Failed to load products',
     },
     advantages: {
       title: 'Why Choose Us',
@@ -475,19 +555,23 @@ export const LanguageProvider = ({ children }) => {
 
   // Загружаем категории с бэкенда
   useEffect(() => {
+    let cancelled = false;
     const fetchCategories = async () => {
       try {
         const data = await productsAPI.getCategories();
-        const catMap = {};
-        data.forEach(cat => {
-          catMap[cat.slug] = { name: cat.name };
-        });
-        setCategories(catMap);
+        if (!cancelled) {
+          const catMap = {};
+          data.forEach(cat => {
+            catMap[cat.slug] = { name: cat.name };
+          });
+          setCategories(catMap);
+        }
       } catch (err) {
-        console.error('Ошибка загрузки категорий:', err);
+        if (!cancelled) console.error('Ошибка загрузки категорий:', err);
       }
     };
     fetchCategories();
+    return () => { cancelled = true; };
   }, [language]);
 
   const t = (key) => {

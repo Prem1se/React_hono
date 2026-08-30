@@ -13,7 +13,7 @@ const categoryConfig = {
 };
 
 const ProductCard = memo(({ product, onClick, onBuy }) => {
-  const { getCategoryName } = useLanguage();
+  const { getCategoryName, t } = useLanguage();
   const cfg = categoryConfig[product.categoryId] || categoryConfig.other;
   const categoryName = getCategoryName(product.category);
   const oldPrice = product.oldPrice || (product.price > 1000 ? Math.round(product.price * 1.3) : null);
@@ -34,28 +34,28 @@ const ProductCard = memo(({ product, onClick, onBuy }) => {
         <div className="spec-block">
           <span className="spec-icon">🖥</span>
           <div className="spec-text">
-            <span className="spec-label">Платформа</span>
+            <span className="spec-label">{t('product.platform')}</span>
             <span className="spec-value">{cfg.platform}</span>
           </div>
         </div>
         <div className="spec-block">
           <span className="spec-icon">⏱</span>
           <div className="spec-text">
-            <span className="spec-label">Срок</span>
+            <span className="spec-label">{t('product.duration')}</span>
             <span className="spec-value">{cfg.duration}</span>
           </div>
         </div>
         <div className="spec-block">
           <span className="spec-icon">🌍</span>
           <div className="spec-text">
-            <span className="spec-label">Регион</span>
+            <span className="spec-label">{t('product.region')}</span>
             <span className="spec-value">{cfg.region}</span>
           </div>
         </div>
         <div className="spec-block">
           <span className="spec-icon">✓</span>
           <div className="spec-text">
-            <span className="spec-label">Гарантия</span>
+            <span className="spec-label">{t('product.warranty')}</span>
             <span className="spec-value">{cfg.warranty}</span>
           </div>
         </div>
@@ -73,7 +73,7 @@ const ProductCard = memo(({ product, onClick, onBuy }) => {
             if (onBuy) onBuy(product);
           }}
         >
-          В корзину
+          {t('product.buy')}
         </button>
       </div>
     </div>

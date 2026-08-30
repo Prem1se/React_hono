@@ -1,12 +1,12 @@
 .news-section {
-  padding: 100px 0;
+  padding: 24px 0;
   position: relative;
   background: transparent;
 }
 
 .news-header {
   text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: 24px;
 }
 
 .news-header h2 {
@@ -160,7 +160,7 @@
 }
 
 @media (max-width: 768px) {
-  .news-section { padding: 60px 0; }
+  .news-section { padding: 32px 0; }
   .news-card { padding: 24px; }
   .news-card-title { font-size: 20px; }
   .news-arrow { width: 40px; height: 40px; font-size: 16px; }

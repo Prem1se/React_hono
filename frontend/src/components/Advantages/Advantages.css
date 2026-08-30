@@ -1,12 +1,12 @@
 .advantages-section {
-  padding: 100px 0;
+  padding: 24px 0;
   position: relative;
   background: transparent;
 }
 
 .advantages-header {
   text-align: center;
-  margin-bottom: 64px;
+  margin-bottom: 28px;
 }
 
 .advantages-header h2 {
@@ -88,7 +88,7 @@
 }
 
 @media (max-width: 768px) {
-  .advantages-section { padding: 60px 0; }
+  .advantages-section { padding: 32px 0; }
   .advantages-grid { grid-template-columns: 1fr; gap: 16px; }
   .advantage-card { padding: 28px 20px; }
   .advantage-icon { font-size: 36px; }

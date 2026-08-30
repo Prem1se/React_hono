@@ -9,6 +9,19 @@ export const initSchema = async (db) => {
       updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP
     );
 
+    CREATE TABLE IF NOT EXISTS categories (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      slug TEXT UNIQUE NOT NULL,
+      name_ru TEXT NOT NULL DEFAULT '',
+      name_en TEXT NOT NULL DEFAULT '',
+      description_ru TEXT NOT NULL DEFAULT '',
+      description_en TEXT NOT NULL DEFAULT '',
+      orderIndex INTEGER DEFAULT 0,
+      isActive BOOLEAN DEFAULT 1,
+      createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+      updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+
     CREATE TABLE IF NOT EXISTS products (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
@@ -59,5 +72,16 @@ export const initSchema = async (db) => {
       FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE,
       FOREIGN KEY (productId) REFERENCES products(id) ON DELETE CASCADE
     );
+
+    -- Индексы для оптимизации запросов
+    CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+    CREATE INDEX IF NOT EXISTS idx_categories_slug ON categories(slug);
+    CREATE INDEX IF NOT EXISTS idx_products_name ON products(name);
+    CREATE INDEX IF NOT EXISTS idx_products_categoryId ON products(categoryId);
+    CREATE INDEX IF NOT EXISTS idx_products_isActive ON products(isActive);
+    CREATE INDEX IF NOT EXISTS idx_cart_userId ON cart(userId);
+    CREATE INDEX IF NOT EXISTS idx_orders_userId ON orders(userId);
+    CREATE INDEX IF NOT EXISTS idx_order_items_orderId ON order_items(orderId);
+    CREATE INDEX IF NOT EXISTS idx_order_items_productId ON order_items(productId);
   `);
 };

@@ -123,16 +123,16 @@ input, textarea, select { font-family: inherit; }
 ::selection { background: var(--blue); color: var(--text-primary); }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0; }
 
-.content-area { animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+.content-area { animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); padding: 48px 0 60px; }
 
 /* Статический Hero для состояний загрузки/ошибки */
 .static-hero {
-  min-height: 60vh;
+  min-height: 40vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 80px 24px 60px;
+  justify-content: flex-start;
+  padding: 32px 24px 40px;
   position: relative;
 }
 

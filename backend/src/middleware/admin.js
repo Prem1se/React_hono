@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import db from '../database/db.js';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'skam-secret-key-change-in-production';
+const JWT_SECRET = process.env.JWT_SECRET || 'secret-key';
 
 export const adminMiddleware = async (c, next) => {
   const authHeader = c.req.header('Authorization');

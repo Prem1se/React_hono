@@ -9,7 +9,7 @@ const OrderSummary = ({ cartItems, total, showCheckoutButton = false, onCheckout
     <div className="cart-summary">
       <h2>{translate('cart.total')}</h2>
       <div className="summary-row">
-        <span>Товары</span>
+        <span>{translate('cart.items')}</span>
         <span>{total.toFixed(0)} ₽</span>
       </div>
       <div className="summary-total">

@@ -1,12 +1,12 @@
 .hero {
   position: relative;
-  min-height: 100vh;
+  min-height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   overflow: hidden;
-  padding: 80px 24px 60px;
+  padding: 20px 24px 24px;
 }
 
 .hero-bg {
@@ -77,7 +77,7 @@
   font-weight: 900;
   line-height: 1.05;
   letter-spacing: -0.04em;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
   color: var(--text-primary);
 }
 
@@ -91,7 +91,7 @@
 .hero-subtitle {
   font-size: clamp(16px, 2vw, 20px);
   color: var(--text-secondary);
-  margin: 0 0 32px;
+  margin: 0 0 24px;
   line-height: 1.6;
   max-width: 600px;
 }
@@ -173,7 +173,7 @@
 /* Terminal */
 .terminal {
   position: relative;
-  margin-bottom: 28px;
+  margin-bottom: 20px;
   width: 680px;
   max-width: 100%;
   background: rgba(10, 14, 26, 0.85);
@@ -182,7 +182,7 @@
   overflow: hidden;
   box-shadow: var(--shadow-xl), var(--shadow-glow-blue);
   z-index: 2;
-  animation: slideUp 1s ease 0.3s both;
+  animation: slideUp 0.8s ease both;
 }
 
 .terminal-header {
@@ -290,8 +290,7 @@
 
 @media (max-width: 1024px) {
   .hero {
-    min-height: auto;
-    padding: 60px 24px 40px;
+    padding: 16px 24px 20px;
   }
 
   .hero-content {
@@ -301,7 +300,7 @@
 
 @media (max-width: 768px) {
   .hero {
-    padding: 50px 16px 32px;
+    padding: 12px 16px 16px;
   }
 
   .hero-orb-1, .hero-orb-2, .hero-orb-3 { opacity: 0.15; }

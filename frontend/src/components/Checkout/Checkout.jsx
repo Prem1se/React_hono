@@ -148,32 +148,32 @@ const Checkout = () => {
                 value={formData.fullName}
                 onChange={handleChange}
                 required
-                placeholder="Иванов Иван Иванович"
+                placeholder={t('checkout.fullNamePlaceholder')}
               />
             </div>
 
             <div className="form-row">
               <div className="form-group">
                 <label>{t('checkout.phone')} *</label>
-                <input
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  required
-                  placeholder="+7 (999) 999-99-99"
-                />
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                required
+                placeholder={t('checkout.phonePlaceholder')}
+              />
               </div>
               <div className="form-group">
                 <label>{t('checkout.email')} *</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  placeholder="example@mail.ru"
-                />
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                placeholder={t('checkout.emailPlaceholder')}
+              />
               </div>
             </div>
 
