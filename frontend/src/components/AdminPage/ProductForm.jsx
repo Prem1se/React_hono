@@ -3,17 +3,27 @@ import Spinner from '../ui/Spinner/Spinner';
 import { useLanguage } from '../../context/LanguageContext';
 import './ProductForm.css';
 
-const categories = ['certificates', 'accounts', 'software', 'games', 'subscriptions', 'other'];
+const categories = [
+  { slug: 'certificates', nameRu: 'Сертификаты', nameEn: 'Certificates' },
+  { slug: 'accounts', nameRu: 'Аккаунты', nameEn: 'Accounts' },
+  { slug: 'software', nameRu: 'ПО', nameEn: 'Software' },
+  { slug: 'games', nameRu: 'Игры', nameEn: 'Games' },
+  { slug: 'subscriptions', nameRu: 'Подписки', nameEn: 'Subscriptions' },
+  { slug: 'other', nameRu: 'Другое', nameEn: 'Other' },
+];
 
-const ProductForm = ({ product, onSubmit, onCancel }) => {
-  const { t } = useLanguage();
+const ProductForm = ({ product, onSubmit, onCancel, categoriesList = [] }) => {
+  const { t, language } = useLanguage();
   const [formData, setFormData] = useState({
-    name: '',
+    nameRu: '',
+    nameEn: '',
     price: '',
-    category: 'certificates',
-    description: '',
+    categoryId: '',
+    descriptionRu: '',
+    descriptionEn: '',
     image: '',
-    stock: ''
+    stock: '',
+    oldPrice: ''
   });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -22,12 +32,15 @@ const ProductForm = ({ product, onSubmit, onCancel }) => {
   useEffect(() => {
     if (product) {
       setFormData({
-        name: product.name,
+        nameRu: product.name_ru || product.name || '',
+        nameEn: product.name_en || '',
         price: product.price,
-        category: product.category,
-        description: product.description || '',
+        categoryId: product.categoryId || '',
+        descriptionRu: product.description_ru || product.description || '',
+        descriptionEn: product.description_en || '',
         image: product.image || '',
-        stock: product.stock || ''
+        stock: product.stock || '',
+        oldPrice: product.oldPrice || ''
       });
     } else {
       resetForm();
@@ -36,12 +49,15 @@ const ProductForm = ({ product, onSubmit, onCancel }) => {
 
   const resetForm = () => {
     setFormData({
-      name: '',
+      nameRu: '',
+      nameEn: '',
       price: '',
-      category: 'certificates',
-      description: '',
+      categoryId: '',
+      descriptionRu: '',
+      descriptionEn: '',
       image: '',
-      stock: ''
+      stock: '',
+      oldPrice: ''
     });
     setError('');
     setSuccess('');
@@ -65,6 +81,11 @@ const ProductForm = ({ product, onSubmit, onCancel }) => {
     }
   };
 
+  const currentCategoryName = (slug) => {
+    const cat = categoriesList.find(c => c.slug === slug);
+    return cat ? cat.name : slug;
+  };
+
   return (
     <form className="product-form" onSubmit={handleSubmit}>
       <h3>{product ? t('admin.editProduct') : t('admin.newProduct')}</h3>
@@ -74,14 +95,25 @@ const ProductForm = ({ product, onSubmit, onCancel }) => {
 
       <div className="form-row">
         <div className="form-group">
-          <label>{t('admin.productsTableName')}</label>
+          <label>{t('admin.productsTableName')} (RU)</label>
           <input
             type="text"
-            value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            value={formData.nameRu}
+            onChange={(e) => setFormData({ ...formData, nameRu: e.target.value })}
             required
           />
         </div>
+        <div className="form-group">
+          <label>{t('admin.productsTableName')} (EN)</label>
+          <input
+            type="text"
+            value={formData.nameEn}
+            onChange={(e) => setFormData({ ...formData, nameEn: e.target.value })}
+          />
+        </div>
+      </div>
+
+      <div className="form-row">
         <div className="form-group">
           <label>{t('admin.productsTablePrice')} (₽)</label>
           <input
@@ -93,18 +125,29 @@ const ProductForm = ({ product, onSubmit, onCancel }) => {
             step="1"
           />
         </div>
+        <div className="form-group">
+          <label>Старая цена (₽)</label>
+          <input
+            type="number"
+            value={formData.oldPrice}
+            onChange={(e) => setFormData({ ...formData, oldPrice: e.target.value || '' })}
+            min="0"
+            step="1"
+          />
+        </div>
       </div>
 
       <div className="form-row">
         <div className="form-group">
           <label>{t('admin.productsTableCategory')}</label>
           <select
-            value={formData.category}
-            onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+            value={formData.categoryId}
+            onChange={(e) => setFormData({ ...formData, categoryId: e.target.value })}
             required
           >
+            <option value="">Выберите категорию</option>
             {categories.map(cat => (
-              <option key={cat} value={cat}>{cat}</option>
+              <option key={cat.slug} value={cat.slug}>{currentCategoryName(cat.slug)}</option>
             ))}
           </select>
         </div>
@@ -130,10 +173,19 @@ const ProductForm = ({ product, onSubmit, onCancel }) => {
       </div>
 
       <div className="form-group">
-        <label>{t('admin.productsDescription')}</label>
+        <label>Описание (RU)</label>
         <textarea
-          value={formData.description}
-          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+          value={formData.descriptionRu}
+          onChange={(e) => setFormData({ ...formData, descriptionRu: e.target.value })}
+          rows="4"
+        />
+      </div>
+
+      <div className="form-group">
+        <label>Description (EN)</label>
+        <textarea
+          value={formData.descriptionEn}
+          onChange={(e) => setFormData({ ...formData, descriptionEn: e.target.value })}
           rows="4"
         />
       </div>

@@ -59,18 +59,18 @@ const Checkout = () => {
     }
 
     if (!formData.fullName || !formData.phone || !formData.email) {
-      setError('Заполните все поля');
+      setError(t('checkout.fillAllFields'));
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
-      setError('Некорректный email');
+      setError(t('checkout.invalidEmail'));
       return;
     }
 
     if (cartItems.length === 0) {
-      setError('Корзина пуста');
+      setError(t('checkout.cartEmpty'));
       return;
     }
 
@@ -99,11 +99,11 @@ const Checkout = () => {
 
   if (paymentSuccess) {
     return (
-      <div className="content-area">
+      <div className="content-area container">
         <div className="success-message">
           <div className="success-icon">✓</div>
           <h1>{t('checkout.success')}</h1>
-          <p>Спасибо за покупку!</p>
+          <p>{t('checkout.successMessage')}</p>
           <Button 
             variant="primary" 
             size="large" 
@@ -119,7 +119,7 @@ const Checkout = () => {
 
   if (cartItems.length === 0) {
     return (
-      <div className="content-area">
+      <div className="content-area container">
         <div className="loading">
           <Spinner />
         </div>
@@ -131,7 +131,7 @@ const Checkout = () => {
 
   return (
     <>
-    <div className="content-area">
+    <div className="content-area container">
       <h1>{t('checkout.title')}</h1>
       
       <div className="checkout-container">

@@ -12,7 +12,7 @@ const CategoryIcons = {
 };
 
 const CategoriesDropdown = ({ show, onCategoryClick }) => {
-  const { t } = useLanguage();
+  const { t, getCategoryName } = useLanguage();
 
   if (!show) return null;
 
@@ -34,7 +34,7 @@ const CategoriesDropdown = ({ show, onCategoryClick }) => {
                   <IconComponent size={24} />
                 </div>
                 <div className="category-info">
-                  <h4>{t(`categories.${key}.name`)}</h4>
+                  <h4>{getCategoryName(key)}</h4>
                   <p>{t(`categories.${key}.description`)}</p>
                 </div>
               </div>

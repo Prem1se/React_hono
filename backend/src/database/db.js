@@ -2,7 +2,8 @@ import sqlite3 from 'sqlite3';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { initSchema } from './schema.js';
-import { seedProducts, seedAdmin } from './seed.js';
+import { migrateSchema } from './migrations.js';
+import { seedProducts, seedAdmin, seedCategories } from './seed.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -17,8 +18,19 @@ const db = new sqlite3.Database(DB_PATH, async (err) => {
     return;
   }
   
-  await db.runAsync('PRAGMA foreign_keys = ON');
+  // Включаем foreign keys
+  await db.run('PRAGMA foreign_keys = ON');
+  // journal mode = WAL для лучшей производительности
+  await db.run('PRAGMA journal_mode = WAL');
+  // Увеличиваем буфер для параллельных операций
+  await db.run('PRAGMA busy_timeout = 5000');
+  
+  // Инициализируем базовую схему
   await initSchema(db);
+  // Применяем миграции (добавляем новые поля)
+  await migrateSchema(db);
+  // Заполняем справочники
+  await seedCategories(db);
   await seedProducts(db);
   await seedAdmin(db);
 });

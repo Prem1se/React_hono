@@ -1,5 +1,78 @@
 import bcrypt from 'bcryptjs';
 
+export const seedCategories = async (db) => {
+  const row = await db.getAsync('SELECT COUNT(*) as count FROM categories');
+
+  if (row.count > 0) {
+    console.log('Категории уже существуют, пропускаем seed');
+    return;
+  }
+
+  const categories = [
+    {
+      slug: 'certificates',
+      nameRu: 'Сертификаты',
+      nameEn: 'Certificates',
+      descRu: 'VPN, прокси и другие цифровые ключи',
+      descEn: 'VPN, proxy and other digital keys',
+      order: 1
+    },
+    {
+      slug: 'accounts',
+      nameRu: 'Аккаунты',
+      nameEn: 'Accounts',
+      descRu: 'Аккаунты сервисов',
+      descEn: 'Service accounts',
+      order: 2
+    },
+    {
+      slug: 'software',
+      nameRu: 'ПО',
+      nameEn: 'Software',
+      descRu: 'Лицензионное программное обеспечение',
+      descEn: 'Licensed software',
+      order: 3
+    },
+    {
+      slug: 'games',
+      nameRu: 'Игры',
+      nameEn: 'Games',
+      descRu: 'Игровые ключи и аккаунты',
+      descEn: 'Game keys and accounts',
+      order: 4
+    },
+    {
+      slug: 'subscriptions',
+      nameRu: 'Подписки',
+      nameEn: 'Subscriptions',
+      descRu: 'Стриминговые сервисы',
+      descEn: 'Streaming services',
+      order: 5
+    },
+    {
+      slug: 'other',
+      nameRu: 'Другое',
+      nameEn: 'Other',
+      descRu: 'Прочие товары',
+      descEn: 'Other products',
+      order: 6
+    }
+  ];
+
+  for (const cat of categories) {
+    try {
+      await db.runAsync(
+        'INSERT INTO categories (slug, name_ru, name_en, description_ru, description_en, orderIndex) VALUES (?, ?, ?, ?, ?, ?)',
+        [cat.slug, cat.nameRu, cat.nameEn, cat.descRu, cat.descEn, cat.order]
+      );
+    } catch (err) {
+      console.error('Ошибка вставки категории:', err.message);
+    }
+  }
+
+  console.log(`Добавлено ${categories.length} категорий в БД`);
+};
+
 export const seedProducts = async (db) => {
   const row = await db.getAsync('SELECT COUNT(*) as count FROM products');
 
@@ -8,154 +81,195 @@ export const seedProducts = async (db) => {
     return;
   }
 
+  // Получаем ID категорий по slug
+  const categories = await db.allAsync('SELECT id, slug FROM categories');
+  const categoryMap = {};
+  categories.forEach(c => categoryMap[c.slug] = c.id);
+
   const products = [
     {
-        name: 'Доступ к интернету (1 месяц)',
+      nameRu: 'Доступ к интернету (1 месяц)',
+      nameEn: 'Internet Access (1 month)',
       price: 299,
-      category: 'certificates',
+      categoryId: categoryMap['certificates'],
       image: '/images/VPN.png',
-      description: 'Высококачественный VPN доступ с высокой скоростью и надежным шифрованием.',
+      descRu: 'Высококачественный VPN доступ с высокой скоростью и надежным шифрованием.',
+      descEn: 'High-quality VPN access with high speed and reliable encryption.',
       stock: 100
     },
     {
-        name: 'Доступ к интернету (12 месяцев)',
+      nameRu: 'Доступ к интернету (12 месяцев)',
+      nameEn: 'Internet Access (12 months)',
       price: 1999,
-      category: 'certificates',
+      categoryId: categoryMap['certificates'],
       image: '/images/VPN.png',
-      description: 'Годовой VPN доступ со скидкой.',
+      descRu: 'Годовой VPN доступ со скидкой.',
+      descEn: 'Annual VPN access with discount.',
       stock: 50
     },
     {
-      name: 'Прокси сервер (1 месяц)',
+      nameRu: 'Прокси сервер (1 месяц)',
+      nameEn: 'Proxy Server (1 month)',
       price: 199,
-      category: 'certificates',
+      categoryId: categoryMap['certificates'],
       image: '/images/proxy.png',
-      description: 'Анонимный прокси сервер для безопасного browsing.',
+      descRu: 'Анонимный прокси сервер для безопасного browsing.',
+      descEn: 'Anonymous proxy server for safe browsing.',
       stock: 200
     },
 
     {
-      name: 'Steam аккаунт с играми',
+      nameRu: 'Steam аккаунт с играми',
+      nameEn: 'Steam account with games',
       price: 1499,
-      category: 'accounts',
+      categoryId: categoryMap['accounts'],
       image: '/images/steam.png',
-      description: 'Аккаунт Steam с 10+ играми. Полный доступ, смена всех данных.',
+      descRu: 'Аккаунт Steam с 10+ играми. Полный доступ, смена всех данных.',
+      descEn: 'Steam account with 10+ games. Full access, change all data.',
       stock: 15
     },
     {
-      name: 'Google аккаунт',
+      nameRu: 'Google аккаунт',
+      nameEn: 'Google account',
       price: 99,
-      category: 'accounts',
+      categoryId: categoryMap['accounts'],
       image: '/images/google.png',
-      description: 'Новый Google аккаунт с почтой Gmail.',
+      descRu: 'Новый Google аккаунт с почтой Gmail.',
+      descEn: 'New Google account with Gmail.',
       stock: 500
     },
     {
-      name: 'Instagram аккаунт (1000+ подписчиков)',
+      nameRu: 'Instagram аккаунт (1000+ подписчиков)',
+      nameEn: 'Instagram account (1000+ followers)',
       price: 599,
-      category: 'accounts',
+      categoryId: categoryMap['accounts'],
       image: '/images/instagram.png',
-      description: 'Аккаунт Instagram с живой аудиторией.',
+      descRu: 'Аккаунт Instagram с живой аудиторией.',
+      descEn: 'Instagram account with live audience.',
       stock: 30
     },
 
     {
-      name: 'Windows 11 Pro',
+      nameRu: 'Windows 11 Pro',
+      nameEn: 'Windows 11 Pro',
       price: 899,
-      category: 'software',
+      categoryId: categoryMap['software'],
       image: 'https://upload.wikimedia.org/wikipedia/en/5/5f/Windows_11_Pro_logo.svg',
-      description: 'Лицензионный ключ Windows 11 Pro.',
+      descRu: 'Лицензионный ключ Windows 11 Pro.',
+      descEn: 'Licensed key for Windows 11 Pro.',
       stock: 100
     },
     {
-      name: 'Microsoft Office 2021',
+      nameRu: 'Microsoft Office 2021',
+      nameEn: 'Microsoft Office 2021',
       price: 1299,
-      category: 'software',
+      categoryId: categoryMap['software'],
       image: 'https://upload.wikimedia.org/wikipedia/commons/4/4e/Microsoft_Office_2021_logo.svg',
-      description: 'Полный пакет Microsoft Office.',
+      descRu: 'Полный пакет Microsoft Office.',
+      descEn: 'Full Microsoft Office package.',
       stock: 75
     },
     {
-      name: 'Adobe Photoshop CC',
+      nameRu: 'Adobe Photoshop CC',
+      nameEn: 'Adobe Photoshop CC',
       price: 799,
-      category: 'software',
+      categoryId: categoryMap['software'],
       image: 'https://upload.wikimedia.org/wikipedia/commons/5/58/Adobe_Photoshop_CC_logo.svg',
-      description: 'Adobe Photoshop CC на 1 год.',
+      descRu: 'Adobe Photoshop CC на 1 год.',
+      descEn: 'Adobe Photoshop CC for 1 year.',
       stock: 60
     },
 
     {
-      name: 'Cyberpunk 2077 (Steam Key)',
+      nameRu: 'Cyberpunk 2077 (Steam Key)',
+      nameEn: 'Cyberpunk 2077 (Steam Key)',
       price: 1999,
-      category: 'games',
+      categoryId: categoryMap['games'],
       image: 'https://upload.wikimedia.org/wikipedia/en/9/9d/Cyberpunk_2077_box_art.jpg',
-      description: 'Ключ активации Cyberpunk 2077 для Steam.',
+      descRu: 'Ключ активации Cyberpunk 2077 для Steam.',
+      descEn: 'Activation key for Cyberpunk 2077 on Steam.',
       stock: 40
     },
     {
-      name: 'GTA V Premium Edition',
+      nameRu: 'GTA V Premium Edition',
+      nameEn: 'GTA V Premium Edition',
       price: 1499,
-      category: 'games',
+      categoryId: categoryMap['games'],
       image: 'https://upload.wikimedia.org/wikipedia/en/5/57/GTA_V_Boxart.jpg',
-      description: 'Grand Theft Auto V Premium Edition.',
+      descRu: 'Grand Theft Auto V Premium Edition.',
+      descEn: 'Grand Theft Auto V Premium Edition.',
       stock: 55
     },
     {
-      name: 'Minecraft Java Edition',
+      nameRu: 'Minecraft Java Edition',
+      nameEn: 'Minecraft Java Edition',
       price: 1299,
-      category: 'games',
+      categoryId: categoryMap['games'],
       image: 'https://upload.wikimedia.org/wikipedia/commons/6/60/Minecraft_box_art.jpg',
-      description: 'Minecraft Java Edition.',
+      descRu: 'Minecraft Java Edition.',
+      descEn: 'Minecraft Java Edition.',
       stock: 80
     },
 
     {
-      name: 'Netflix Premium (1 месяц)',
+      nameRu: 'Netflix Premium (1 месяц)',
+      nameEn: 'Netflix Premium (1 month)',
       price: 499,
-      category: 'subscriptions',
+      categoryId: categoryMap['subscriptions'],
       image: 'https://upload.wikimedia.org/wikipedia/commons/4/40/Netflix_2015_logo.svg',
-      description: 'Подписка Netflix Premium на 1 месяц. 4K качество.',
+      descRu: 'Подписка Netflix Premium на 1 месяц. 4K качество.',
+      descEn: 'Netflix Premium subscription for 1 month. 4K quality.',
       stock: 100
     },
     {
-      name: 'Spotify Premium (1 месяц)',
+      nameRu: 'Spotify Premium (1 месяц)',
+      nameEn: 'Spotify Premium (1 month)',
       price: 199,
-      category: 'subscriptions',
+      categoryId: categoryMap['subscriptions'],
       image: 'https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg',
-      description: 'Spotify Premium на 1 месяц. Без рекламы.',
+      descRu: 'Spotify Premium на 1 месяц. Без рекламы.',
+      descEn: 'Spotify Premium for 1 month. No ads.',
       stock: 150
     },
     {
-      name: 'Discord Nitro (1 месяц)',
+      nameRu: 'Discord Nitro (1 месяц)',
+      nameEn: 'Discord Nitro (1 month)',
       price: 399,
-      category: 'subscriptions',
+      categoryId: categoryMap['subscriptions'],
       image: 'https://upload.wikimedia.org/wikipedia/commons/5/53/Discord_logo.svg',
-      description: 'Discord Nitro на 1 месяц.',
+      descRu: 'Discord Nitro на 1 месяц.',
+      descEn: 'Discord Nitro for 1 month.',
       stock: 120
     },
     {
-      name: 'YouTube Premium (1 месяц)',
+      nameRu: 'YouTube Premium (1 месяц)',
+      nameEn: 'YouTube Premium (1 month)',
       price: 299,
-      category: 'subscriptions',
+      categoryId: categoryMap['subscriptions'],
       image: 'https://upload.wikimedia.org/wikipedia/commons/a/a0/YouTube_Premium_logo.svg',
-      description: 'YouTube Premium без рекламы.',
+      descRu: 'YouTube Premium без рекламы.',
+      descEn: 'YouTube Premium without ads.',
       stock: 90
     },
 
     {
-      name: 'Антивирус Kaspersky (1 год)',
+      nameRu: 'Антивирус Kaspersky (1 год)',
+      nameEn: 'Kaspersky Antivirus (1 year)',
       price: 1499,
-      category: 'other',
+      categoryId: categoryMap['other'],
       image: 'https://upload.wikimedia.org/wikipedia/commons/2/2b/Kaspersky_Lab_logo.svg',
-      description: 'Kaspersky Internet Security на 1 год.',
+      descRu: 'Kaspersky Internet Security на 1 год.',
+      descEn: 'Kaspersky Internet Security for 1 year.',
       stock: 70
     },
     {
-      name: 'Облачное хранилище 1TB (1 год)',
+      nameRu: 'Облачное хранилище 1TB (1 год)',
+      nameEn: 'Cloud Storage 1TB (1 year)',
       price: 999,
-      category: 'other',
+      categoryId: categoryMap['other'],
       image: 'https://upload.wikimedia.org/wikipedia/commons/6/6d/Google_Drive_logo.svg',
-      description: 'Облачное хранилище 1TB на 1 год.',
+      descRu: 'Облачное хранилище 1TB на 1 год.',
+      descEn: 'Cloud storage 1TB for 1 year.',
       stock: 100
     }
   ];
@@ -163,8 +277,19 @@ export const seedProducts = async (db) => {
   for (const product of products) {
     try {
       await db.runAsync(
-        'INSERT INTO products (name, price, category, description, image, stock) VALUES (?, ?, ?, ?, ?, ?)',
-        [product.name, product.price, product.category, product.description, product.image, product.stock]
+        'INSERT INTO products (name, name_ru, name_en, price, categoryId, description, description_ru, description_en, image, stock) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [
+          product.nameRu,
+          product.nameRu,
+          product.nameEn,
+          product.price,
+          product.categoryId,
+          product.descRu,
+          product.descRu,
+          product.descEn,
+          product.image,
+          product.stock
+        ]
       );
     } catch (err) {
       console.error('Ошибка вставки товара:', err.message);

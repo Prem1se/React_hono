@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import { productsAPI } from '../services/api';
 
 const translations = {
   ru: {
@@ -10,12 +11,28 @@ const translations = {
       register: 'Регистрация',
       logout: 'Выйти',
       profile: 'Профиль',
+      services: 'Услуги',
+      contacts: 'Контакты',
+      goToCart: 'Перейти',
+      userIcon: '👤',
     },
     home: {
       title: '',
       subtitle: '',
       popularProducts: 'Рекомендованные товары',
+      popularDescription: 'Самые популярные товары этой недели',
       allProducts: 'Все товары',
+      allDescription: 'Полный каталог наших товаров',
+      seeAll: 'Смотреть все',
+    },
+    hero: {
+      badge: 'Система активна • 24/7',
+      titlePart1: 'Цифровые товары',
+      titlePart2: 'мгновенной доставки',
+      subtitle: 'Игры, VPN, софт, аккаунты и подписки. Автоматическая выдача, гарантия качества, поддержка 24/7.',
+      browse: 'В каталог',
+      allProducts: 'Все товары',
+      popular: 'Популярное',
     },
     loading: 'Загрузка...',
     back: 'Назад',
@@ -134,6 +151,9 @@ const translations = {
       processing: 'Обработка...',
       success: 'Оплата успешна!',
       successMessage: 'Спасибо за покупку. Подтверждение отправлено на email.',
+      fillAllFields: 'Заполните все поля',
+      invalidEmail: 'Некорректный email',
+      cartEmpty: 'Корзина пуста',
     },
     categories: {
       certificates: { name: 'Сертификаты', description: 'VPN, прокси и другие' },
@@ -146,6 +166,35 @@ const translations = {
     languages: {
       ru: 'Русский',
       en: 'English',
+    },
+    popular: {
+      errorTitle: 'Ошибка загрузки',
+      checkBackend: 'Проверьте, что бэкенд запущен: http://localhost:3000',
+      tryAgain: 'Попробовать снова',
+    },
+    advantages: {
+      title: 'Почему выбирают нас',
+      subtitle: 'Мы создали лучший опыт покупки цифровых товаров',
+      instant: 'Мгновенная доставка',
+      instantDesc: 'Автоматическая выдача товаров сразу после оплаты. Без ожидания, без задержек.',
+      guarantee: 'Гарантия качества',
+      guaranteeDesc: 'Все товары проверены. Гарантия замены в течение 30 дней на каждый товар.',
+      benefits: 'Выгодные цены',
+      benefitsDesc: 'Скидки и акции до 40%. Бонусная программа с кешбэком для постоянных клиентов.',
+      support: 'Поддержка 24/7',
+      supportDesc: 'Помощь в выборе и настройке. Среднее время ответа — 5 минут, работаем круглосуточно.',
+    },
+    how: {
+      title: 'Как это работает',
+      subtitle: 'Всего 4 простых шага от выбора до получения товара',
+      step1title: 'Выберите товар',
+      step1desc: 'Просмотрите каталог, выберите нужный товар из игр, VPN, софта, аккаунтов или подписок.',
+      step2title: 'Оформите заказ',
+      step2desc: 'Добавьте товар в корзину, заполните контактные данные и оплатите удобным способом.',
+      step3title: 'Получите товар',
+      step3desc: 'После оплаты товар выдаётся автоматически — ключ, аккаунт или подписка придут мгновенно.',
+      step4title: 'Пользуйтесь и экономьте',
+      step4desc: 'Активируйте товар, пользуйтесь и получайте кешбэк для следующих покупок.',
     },
     footer: {
       brand: 'SKAM',
@@ -161,6 +210,20 @@ const translations = {
       telegram: 'Telegram: @skam_support',
       copyright: '2025 SKAM. Все права защищены.',
     },
+    productTabs: {
+      title: 'Актуальные предложения',
+      description: 'Игры, VPN, софт, аккаунты и подписки — всё с мгновенной выдачей',
+      noProducts: 'Товары в этой категории скоро появятся',
+      viewAll: 'Смотреть весь каталог',
+      tab: {
+        all: 'Все',
+        games: 'Игры',
+        certificates: 'VPN',
+        software: 'Софт',
+        accounts: 'Аккаунты',
+        subscriptions: 'Подписки',
+      },
+    },
   },
   en: {
     header: {
@@ -171,12 +234,28 @@ const translations = {
       register: 'Register',
       logout: 'Sign Out',
       profile: 'Profile',
+      services: 'Services',
+      contacts: 'Contacts',
+      goToCart: 'Go to Cart',
+      userIcon: '👤',
     },
     home: {
       title: '',
       subtitle: '',
       popularProducts: 'Recommended Products',
+      popularDescription: 'Most popular products this week',
       allProducts: 'All Products',
+      allDescription: 'Full catalog of our products',
+      seeAll: 'View all',
+    },
+    hero: {
+      badge: 'System active • 24/7',
+      titlePart1: 'Digital goods',
+      titlePart2: 'instant delivery',
+      subtitle: 'Games, VPN, software, accounts and subscriptions. Automated delivery, quality guarantee, 24/7 support.',
+      browse: 'Browse Catalog',
+      allProducts: 'All Products',
+      popular: 'Popular',
     },
     loading: 'Loading...',
     back: 'Back',
@@ -297,6 +376,9 @@ const translations = {
       processing: 'Processing...',
       success: 'Payment Successful!',
       successMessage: 'Thank you for your purchase. Confirmation sent to email.',
+      fillAllFields: 'Fill in all fields',
+      invalidEmail: 'Invalid email',
+      cartEmpty: 'Cart is empty',
     },
     categories: {
       certificates: { name: 'Certificates', description: 'VPN, proxy and others' },
@@ -309,6 +391,35 @@ const translations = {
     languages: {
       ru: 'Русский',
       en: 'English',
+    },
+    popular: {
+      errorTitle: 'Error loading',
+      checkBackend: 'Check that the backend is running: http://localhost:3000',
+      tryAgain: 'Try again',
+    },
+    advantages: {
+      title: 'Why Choose Us',
+      subtitle: 'We created the best experience for buying digital products',
+      instant: 'Instant Delivery',
+      instantDesc: 'Automatic delivery of products immediately after payment. No waiting, no delays.',
+      guarantee: 'Quality Guarantee',
+      guaranteeDesc: 'All products are verified. Replacement guarantee for 30 days on each product.',
+      benefits: 'Great Prices',
+      benefitsDesc: 'Discounts and promotions up to 40%. Bonus program with cashback for regular customers.',
+      support: '24/7 Support',
+      supportDesc: 'Help with selection and setup. Average response time — 5 minutes, working around the clock.',
+    },
+    how: {
+      title: 'How It Works',
+      subtitle: 'Just 4 simple steps from selection to receiving your product',
+      step1title: 'Choose a product',
+      step1desc: 'Browse the catalog, select the product you need from games, VPN, software, accounts or subscriptions.',
+      step2title: 'Place an order',
+      step2desc: 'Add the product to your cart, fill in your contact details and pay using a convenient method.',
+      step3title: 'Receive your product',
+      step3desc: 'After payment, the product is delivered automatically — key, account or subscription arrives instantly.',
+      step4title: 'Use and save',
+      step4desc: 'Activate the product, use it and get cashback for future purchases.',
     },
     footer: {
       brand: 'SKAM',
@@ -323,6 +434,20 @@ const translations = {
       email: 'support@skam.com',
       telegram: 'Telegram: @skam_support',
       copyright: '2025 SKAM. All rights reserved.',
+    },
+    productTabs: {
+      title: 'Featured Offers',
+      description: 'Games, VPN, software, accounts and subscriptions — all with instant delivery',
+      noProducts: 'Products in this category will be available soon',
+      viewAll: 'View full catalog',
+      tab: {
+        all: 'All',
+        games: 'Games',
+        certificates: 'VPN',
+        software: 'Software',
+        accounts: 'Accounts',
+        subscriptions: 'Subscriptions',
+      },
     },
   },
 };
@@ -342,8 +467,27 @@ export const LanguageProvider = ({ children }) => {
     return localStorage.getItem('language') || 'ru';
   });
 
+  const [categories, setCategories] = useState({});
+
   useEffect(() => {
     localStorage.setItem('language', language);
+  }, [language]);
+
+  // Загружаем категории с бэкенда
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const data = await productsAPI.getCategories();
+        const catMap = {};
+        data.forEach(cat => {
+          catMap[cat.slug] = { name: cat.name };
+        });
+        setCategories(catMap);
+      } catch (err) {
+        console.error('Ошибка загрузки категорий:', err);
+      }
+    };
+    fetchCategories();
   }, [language]);
 
   const t = (key) => {
@@ -361,12 +505,32 @@ export const LanguageProvider = ({ children }) => {
     return value;
   };
 
-  const changeLanguage = (newLang) => {
+  // Получаем название категории — сначала из БД, потом из переводов
+  const getCategoryName = (slug) => {
+    if (categories[slug]?.name) {
+      return categories[slug].name;
+    }
+    // Fallback к переводу из translations
+    return t(`categories.${slug}.name`) || slug;
+  };
+
+  const changeLanguage = async (newLang) => {
     setLanguage(newLang);
+    // При смене языка перезагружаем категории
+    try {
+      const data = await productsAPI.getCategories();
+      const catMap = {};
+      data.forEach(cat => {
+        catMap[cat.slug] = { name: cat.name };
+      });
+      setCategories(catMap);
+    } catch (err) {
+      console.error('Ошибка загрузки категорий:', err);
+    }
   };
 
   return (
-    <LanguageContext.Provider value={{ language, t, changeLanguage }}>
+    <LanguageContext.Provider value={{ language, t, changeLanguage, categories, getCategoryName }}>
       {children}
     </LanguageContext.Provider>
   );

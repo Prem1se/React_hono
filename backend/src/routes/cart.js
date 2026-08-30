@@ -6,15 +6,20 @@ const cart = new Hono();
 
 cart.use('*', authMiddleware);
 
-const getCartItems = async (userId) => {
+const getCartItems = async (userId, lang) => {
   const rows = await db.allAsync(`
-    SELECT c.productId, c.quantity, p.name, p.price, p.image, p.category
+    SELECT c.productId, c.quantity, p.name, p.name_ru, p.name_en, p.price, p.image, p.categoryId, cat.slug as category
     FROM cart c
     JOIN products p ON c.productId = p.id
+    LEFT JOIN categories cat ON p.categoryId = cat.id
     WHERE c.userId = ?
   `, [userId]);
   
-  const items = rows || [];
+  const items = (rows || []).map(row => {
+    const name = lang === 'en' && row.name_en ? row.name_en : row.name_ru || row.name;
+    return { ...row, name };
+  });
+  
   const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   return { items, total };
 };
@@ -22,7 +27,8 @@ const getCartItems = async (userId) => {
 cart.get('/', async (c) => {
   try {
     const userId = c.get('userId');
-    return c.json(await getCartItems(userId));
+    const lang = c.req.query('lang') || 'ru';
+    return c.json(await getCartItems(userId, lang));
   } catch (error) {
     return c.json({ error: error.message }, 500);
   }
@@ -55,7 +61,8 @@ cart.post('/', async (c) => {
       );
     }
 
-    return c.json(await getCartItems(userId));
+    const lang = c.req.query('lang') || 'ru';
+    return c.json(await getCartItems(userId, lang));
   } catch (error) {
     return c.json({ error: error.message }, 500);
   }
@@ -79,7 +86,8 @@ cart.put('/:productId', async (c) => {
       );
     }
 
-    return c.json(await getCartItems(userId));
+    const lang = c.req.query('lang') || 'ru';
+    return c.json(await getCartItems(userId, lang));
   } catch (error) {
     return c.json({ error: error.message }, 500);
   }
@@ -95,7 +103,8 @@ cart.delete('/:productId', async (c) => {
       [userId, productId]
     );
 
-    return c.json(await getCartItems(userId));
+    const lang = c.req.query('lang') || 'ru';
+    return c.json(await getCartItems(userId, lang));
   } catch (error) {
     return c.json({ error: error.message }, 500);
   }

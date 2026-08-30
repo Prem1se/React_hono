@@ -91,7 +91,7 @@ export const CartProvider = ({ children }) => {
           name: product.name,
           price: product.price,
           image: product.image,
-          category: product.category,
+          categoryId: product.categoryId,
         });
       }
       saveGuestCart(guestCart);

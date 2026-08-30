@@ -9,21 +9,26 @@ import './ProductsAdmin.css';
 const ProductsAdmin = () => {
   const { t } = useLanguage();
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
 
   useEffect(() => {
-    fetchProducts();
+    fetchData();
   }, []);
 
-  const fetchProducts = async () => {
+  const fetchData = async () => {
     try {
       setLoading(true);
-      const data = await productsAPI.getAll();
-      setProducts(data);
+      const [productsData, categoriesData] = await Promise.all([
+        productsAPI.getAll(),
+        productsAPI.getCategories()
+      ]);
+      setProducts(productsData);
+      setCategories(categoriesData);
     } catch (err) {
-      console.error('Error loading products:', err);
+      console.error('Error loading data:', err);
     } finally {
       setLoading(false);
     }
@@ -35,7 +40,7 @@ const ProductsAdmin = () => {
     } else {
       await productsAPI.create(formData);
     }
-    fetchProducts();
+    fetchData();
     resetForm();
   };
 
@@ -54,7 +59,7 @@ const ProductsAdmin = () => {
 
     try {
       await productsAPI.delete(id);
-      fetchProducts();
+      fetchData();
     } catch (err) {
       console.error('Error deleting:', err);
     }
@@ -82,6 +87,7 @@ const ProductsAdmin = () => {
           product={editingProduct}
           onSubmit={handleSubmit}
           onCancel={resetForm}
+          categoriesList={categories}
         />
       )}
 

@@ -1,0 +1,110 @@
+.cta-section {
+  padding: 80px 0;
+  position: relative;
+}
+
+.cta-content {
+  background: var(--gradient-primary);
+  background-size: 200% 200%;
+  animation: gradient-shift 6s ease infinite;
+  border-radius: var(--radius-2xl);
+  padding: 64px 48px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-content::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+  animation: spin-slow 20s linear infinite;
+}
+
+.cta-content h2 {
+  background: linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.8) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.cta-content p {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 18px;
+  margin-bottom: 32px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  z-index: 1;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+}
+
+.cta-btn-primary {
+  padding: 16px 32px;
+  background: var(--white);
+  color: var(--primary-dark);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.cta-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.cta-btn-secondary {
+  padding: 16px 32px;
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--white);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--radius-md);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  backdrop-filter: blur(10px);
+}
+
+.cta-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .cta-section {
+    padding: 60px 0;
+  }
+  
+  .cta-content {
+    padding: 48px 24px;
+  }
+  
+  .cta-content h2 {
+    font-size: 28px;
+  }
+  
+  .cta-content p {
+    font-size: 16px;
+  }
+}

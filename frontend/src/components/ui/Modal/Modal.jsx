@@ -1,28 +1,32 @@
 import { CloseIcon } from '../Icons';
 import './Modal.css';
 
-const Modal = ({ isOpen, onClose, title, children, maxWidth = '400px', align = 'center' }) => {
+const Modal = ({ isOpen, onClose, title, children, maxWidth }) => {
   if (!isOpen) return null;
-
-  const alignStyle = align === 'top' 
-    ? { alignItems: 'flex-start', justifyContent: 'center' }
-    : { alignItems: 'center', justifyContent: 'center' };
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div 
-        className="modal-content" 
+      <div
+        className="modal-content"
         onClick={(e) => e.stopPropagation()}
-        style={{ 
-          maxWidth, 
-          ...alignStyle 
-        }}
+        style={maxWidth ? { maxWidth } : undefined}
       >
-        {title && <h2>{title}</h2>}
-        <button className="modal-close" onClick={onClose}>
-          <CloseIcon size={20} />
-        </button>
-        {children}
+        {title && (
+          <div className="modal-header">
+            <h3>{title}</h3>
+            <button className="modal-close" onClick={onClose}>
+              <CloseIcon size={20} />
+            </button>
+          </div>
+        )}
+        {!title && (
+          <button className="modal-close" onClick={onClose}>
+            <CloseIcon size={20} />
+          </button>
+        )}
+        <div className="modal-body">
+          {children}
+        </div>
       </div>
     </div>
   );

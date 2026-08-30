@@ -50,7 +50,7 @@ const PasswordChange = () => {
 
   if (!user) {
     return (
-      <div className="content-area">
+      <div className="content-area container">
         <EmptyState 
           title={t('profile.notAuthorized')}
           description={t('profile.loginRequired')}
@@ -62,7 +62,7 @@ const PasswordChange = () => {
   }
 
   return (
-    <div className="content-area">
+    <div className="content-area container">
       <div className="password-change">
         <div className="password-change-container">
           <h2>{t('profile.changePassword')}</h2>

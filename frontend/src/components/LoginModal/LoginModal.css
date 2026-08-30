@@ -1,29 +1,29 @@
-﻿.login-form .form-group { 
-  margin-bottom: 16px; 
-}
+.login-form .form-group { margin-bottom: 16px; }
 
 .login-form .form-group label {
   display: block;
   margin-bottom: 6px;
   font-size: 14px;
   font-weight: 600;
+  color: var(--text-primary);
 }
 
 .login-form .form-group input {
   width: 100%;
   padding: 12px 14px;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
   font-size: 14px;
   outline: none;
-  transition: all 0.2s;
+  transition: all var(--transition-fast);
   font-family: inherit;
   color: var(--text-primary);
 }
 
-.login-form .form-group input:focus { 
-  border-color: var(--white); 
+.login-form .form-group input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
 .forgot-password-link {
@@ -31,7 +31,7 @@
   text-align: right;
   background: none;
   border: none;
-  color: var(--white);
+  color: var(--blue-light);
   cursor: pointer;
   font-size: 13px;
   font-weight: 500;
@@ -39,13 +39,10 @@
   margin-top: -12px;
   margin-bottom: 12px;
   font-family: inherit;
-  transition: color 0.2s;
+  transition: color var(--transition-fast);
 }
 
-.forgot-password-link:hover {
-  color: var(--white);
-  text-decoration: underline;
-}
+.forgot-password-link:hover { color: var(--text-primary); text-decoration: underline; }
 
 .auth-switch {
   margin-top: 20px;
@@ -57,17 +54,16 @@
 .switch-btn {
   background: none;
   border: none;
-  color: var(--white);
+  color: var(--blue-light);
   cursor: pointer;
   font-weight: 600;
   margin-left: 4px;
   font-family: inherit;
   font-size: 14px;
+  transition: color var(--transition-fast);
 }
 
-.switch-btn:hover {
-  text-decoration: underline;
-}
+.switch-btn:hover { color: var(--text-primary); text-decoration: underline; }
 
 .button-spinner {
   display: flex;

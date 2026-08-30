@@ -6,13 +6,15 @@ import './CartItem.css';
 const CartItem = ({ item, onUpdateQuantity, onRemove, idField = 'id' }) => {
   const { t } = useLanguage();
   const itemId = item[idField];
-  
+
   return (
     <div className="cart-item">
-      <img src={item.image} alt={item.name} />
-      <div className="cart-item-details">
-        <h3>{item.name}</h3>
-        <p className="item-price">{formatPrice(item.price)}</p>
+      <div className="cart-item-image">
+        <img src={item.image} alt={item.name} />
+      </div>
+      <div className="cart-item-info">
+        <h3 className="cart-item-name">{item.name}</h3>
+        <p className="cart-item-price">{formatPrice(item.price)}</p>
       </div>
       <div className="cart-item-quantity">
         <button onClick={() => onUpdateQuantity(itemId, item.quantity - 1)}>
@@ -26,7 +28,7 @@ const CartItem = ({ item, onUpdateQuantity, onRemove, idField = 'id' }) => {
       <div className="cart-item-total">
         {formatPrice(item.price * item.quantity)}
       </div>
-      <button className="remove-item" onClick={() => onRemove(itemId)}>
+      <button className="cart-item-remove" onClick={() => onRemove(itemId)}>
         <TrashIcon size={16} />
       </button>
     </div>

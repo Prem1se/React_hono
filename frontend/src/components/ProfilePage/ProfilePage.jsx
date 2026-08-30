@@ -36,7 +36,7 @@ const ProfilePage = () => {
 
   if (!user) {
     return (
-      <div className="content-area">
+      <div className="content-area container">
         <EmptyState 
           title={t('profile.notAuthorized')}
           description={t('profile.loginRequired')}
@@ -48,7 +48,7 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="content-area">
+    <div className="content-area container">
       <div className="profile-page">
         <div className="profile-header">
           <div className="profile-avatar-large">
@@ -66,14 +66,14 @@ const ProfilePage = () => {
         </div>
 
         <div className="profile-section">
-          <h2 style={{ margin: 0 }}>{t('profile.purchaseHistory')}</h2>
-          
+          <h2 className="profile-section-title">{t('profile.purchaseHistory')}</h2>
+
           {loading ? (
             <div className="loading">
               <Spinner />
             </div>
           ) : orders.length === 0 ? (
-            <EmptyState 
+            <EmptyState
               title={t('profile.noPurchases')}
               actionText={t('profile.goToProducts')}
               onAction={() => navigate('/')}

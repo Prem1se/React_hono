@@ -81,7 +81,7 @@ const AdminPage = () => {
 
   if (selectedUser) {
     return (
-      <div className="content-area">
+      <div className="content-area container">
         <button className="back-btn" onClick={handleBackToUsers}>
           ← {t('admin.users')}
         </button>
@@ -145,7 +145,7 @@ const AdminPage = () => {
   }
 
   return (
-    <div className="content-area">
+    <div className="content-area container">
       <h1>{t('admin.panel')}</h1>
 
       <div className="admin-tabs">

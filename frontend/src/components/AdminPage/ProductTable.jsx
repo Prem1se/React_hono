@@ -4,7 +4,7 @@ import { useLanguage } from '../../context/LanguageContext';
 import './ProductTable.css';
 
 const ProductTable = ({ products, onEdit, onDelete }) => {
-  const { t } = useLanguage();
+  const { t, getCategoryName } = useLanguage();
 
   return (
     <div className="product-table">
@@ -32,7 +32,7 @@ const ProductTable = ({ products, onEdit, onDelete }) => {
                 )}
               </td>
               <td>{product.name}</td>
-              <td>{product.category}</td>
+              <td>{getCategoryName(product.category)}</td>
               <td>{formatPrice(product.price)}</td>
               <td>{product.stock}</td>
               <td>

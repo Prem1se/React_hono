@@ -1,0 +1,112 @@
+.banner-section {
+  background: var(--gradient-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  padding: 48px;
+  margin: 48px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.banner-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--gradient-primary);
+}
+
+.banner-default::before {
+  background: var(--gradient-primary);
+}
+
+.banner-cyan::before {
+  background: var(--gradient-cyan);
+}
+
+.banner-warm::before {
+  background: var(--gradient-warm);
+}
+
+.banner-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 32px;
+  position: relative;
+  z-index: 1;
+}
+
+.banner-text h2 {
+  font-size: clamp(24px, 3vw, 32px);
+  font-weight: 800;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+}
+
+.banner-text p {
+  font-size: 16px;
+  color: var(--text-secondary);
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+.banner-btn {
+  padding: 14px 28px;
+  background: var(--gradient-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
+  white-space: nowrap;
+}
+
+.banner-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+  filter: brightness(1.1);
+}
+
+.banner-cyan .banner-btn {
+  background: var(--gradient-cyan);
+  box-shadow: 0 4px 16px rgba(34, 211, 238, 0.3);
+}
+
+.banner-cyan .banner-btn:hover {
+  box-shadow: 0 8px 24px rgba(34, 211, 238, 0.4);
+}
+
+.banner-warm .banner-btn {
+  background: var(--gradient-warm);
+  box-shadow: 0 4px 16px rgba(249, 115, 22, 0.3);
+}
+
+.banner-warm .banner-btn:hover {
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.4);
+}
+
+@media (max-width: 768px) {
+  .banner-section {
+    padding: 32px 24px;
+    margin: 32px 0;
+  }
+  
+  .banner-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .banner-text h2 {
+    font-size: 24px;
+  }
+  
+  .banner-btn {
+    width: 100%;
+  }
+}

@@ -1,0 +1,85 @@
+.how-section {
+  padding: 100px 0;
+  position: relative;
+  background: transparent;
+}
+
+.how-header {
+  text-align: center;
+  margin-bottom: 64px;
+}
+
+.how-header h2 {
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 12px;
+}
+
+.how-header .section-description { margin: 0 auto; }
+
+.how-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+}
+
+.how-step {
+  position: relative;
+  text-align: center;
+  padding: 32px 20px;
+}
+
+.how-step-num {
+  font-size: 48px;
+  font-weight: 900;
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.how-step-icon {
+  font-size: 40px;
+  margin-bottom: 16px;
+}
+
+.how-step-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+}
+
+.how-step-text {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.how-step-line {
+  position: absolute;
+  top: 60px;
+  right: -16px;
+  width: 32px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--blue), var(--purple));
+  opacity: 0.3;
+}
+
+@media (max-width: 1024px) {
+  .how-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .how-step-line { display: none; }
+}
+
+@media (max-width: 768px) {
+  .how-section { padding: 60px 0; }
+  .how-grid { grid-template-columns: 1fr; gap: 16px; }
+  .how-step { padding: 24px 16px; }
+  .how-step-num { font-size: 36px; }
+  .how-step-icon { font-size: 32px; }
+}

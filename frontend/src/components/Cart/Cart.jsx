@@ -40,7 +40,7 @@ const Cart = () => {
 
   if (loading) {
     return (
-      <div className="content-area">
+      <div className="content-area container">
         <div className="loading">
           <Spinner />
         </div>
@@ -50,7 +50,7 @@ const Cart = () => {
 
   if (cartItems.length === 0) {
     return (
-      <div className="content-area">
+      <div className="content-area container">
         <EmptyState 
           icon="🛒"
           title={t('cart.empty')}
@@ -64,7 +64,7 @@ const Cart = () => {
 
   return (
     <>
-      <div className="content-area">
+      <div className="content-area container">
         <h1>{t('cart.title')}</h1>
         
         <div className="cart-container">

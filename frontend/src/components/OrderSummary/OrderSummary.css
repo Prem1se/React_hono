@@ -1,18 +1,32 @@
-﻿.cart-summary {
-  background: var(--bg-color);
-  border-radius: 8px;
-  padding: 24px;
+.cart-summary {
+  background: var(--bg-glass);
+  border-radius: var(--radius-lg);
+  padding: 28px;
   height: fit-content;
   position: sticky;
-  top: 88px;
-  border: 1px solid var(--border-color);
+  top: 104px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+}
+
+.cart-summary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--gradient-primary);
 }
 
 .cart-summary h2 {
   font-size: 20px;
   margin-bottom: 20px;
   padding-bottom: 16px;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border);
+  color: var(--text-primary);
+  font-weight: 700;
 }
 
 .summary-row {
@@ -28,34 +42,43 @@
   justify-content: space-between;
   margin: 20px 0;
   padding-top: 16px;
-  border-top: 2px solid var(--border-color);
+  border-top: 2px solid var(--border);
   font-size: 20px;
   font-weight: 700;
-  color: var(--white);
+  color: var(--text-primary);
+}
+
+.summary-total span:last-child {
+  font-weight: 800;
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .checkout-btn {
   width: 100%;
-  background: var(--white);
-  color: var(--bg-color);
+  background: var(--gradient-primary);
+  color: var(--white);
   border: none;
   padding: 16px;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all var(--transition-normal);
   font-family: inherit;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
-.checkout-btn:hover {
-  background: var(--white);
-  color: var(--bg-color);
+.checkout-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
+  filter: brightness(1.1);
 }
 
+.checkout-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
 @media (max-width: 1024px) {
-  .cart-summary {
-    position: static;
-  }
+  .cart-summary { position: static; }
 }

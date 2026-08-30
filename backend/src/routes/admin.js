@@ -4,6 +4,7 @@ import db from '../database/db.js';
 
 const admin = new Hono();
 
+admin.use('*', adminMiddleware);
 
 function groupOrders(rows) {
   if (!rows || rows.length === 0) return [];
@@ -39,7 +40,7 @@ function groupOrders(rows) {
   return Object.values(ordersMap);
 }
 
-
+// Список пользователей
 admin.get('/users', async (c) => {
   try {
     const excludeAdmins = c.req.query('excludeAdmins') === 'true';
@@ -57,6 +58,7 @@ admin.get('/users', async (c) => {
   }
 });
 
+// Список заказов
 admin.get('/orders', async (c) => {
   try {
     const rows = await db.allAsync(`
@@ -77,7 +79,7 @@ admin.get('/orders', async (c) => {
   }
 });
 
-
+// Заказы пользователя
 admin.get('/users/:userId/orders', async (c) => {
   try {
     const userId = parseInt(c.req.param('userId'));
@@ -103,6 +105,7 @@ admin.get('/users/:userId/orders', async (c) => {
   }
 });
 
+// Статистика
 admin.get('/stats', async (c) => {
   try {
     const [usersRow, ordersRow, revenueRow] = await Promise.all([

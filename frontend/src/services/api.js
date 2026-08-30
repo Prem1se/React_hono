@@ -2,6 +2,9 @@ const API_BASE = '/api';
 
 const getToken = () => localStorage.getItem('token');
 
+// Получаем текущий язык из localStorage
+const getLang = () => localStorage.getItem('language') || 'ru';
+
 const request = async (endpoint, options = {}) => {
   const token = getToken();
   
@@ -14,7 +17,14 @@ const request = async (endpoint, options = {}) => {
     }
   };
 
-  const response = await fetch(`${API_BASE}${endpoint}`, config);
+  // Добавляем language к query параметрам для GET запросов
+  let url = `${API_BASE}${endpoint}`;
+  if (options.method === 'GET' || !options.method) {
+    const separator = url.includes('?') ? '&' : '?';
+    url = `${url}${separator}lang=${getLang()}`;
+  }
+
+  const response = await fetch(url, config);
   const data = await response.json();
 
   if (!response.ok) {

@@ -25,7 +25,7 @@ ordersRouter.post('/', async (c) => {
     const placeholders = productIds.map(() => '?').join(',');
     
     const products = await db.allAsync(
-      `SELECT * FROM products WHERE id IN (${placeholders})`,
+      `SELECT * FROM products WHERE id IN (${placeholders}) AND isActive = 1`,
       productIds
     );
 
@@ -44,6 +44,9 @@ ordersRouter.post('/', async (c) => {
       return sum + (product.price * item.quantity);
     }, 0);
 
+    // Начинаем транзакцию
+    await db.run('BEGIN TRANSACTION');
+
     try {
       const result = await db.runAsync(
         'INSERT INTO orders (userId, total, fullName, phone, email) VALUES (?, ?, ?, ?, ?)',
@@ -51,7 +54,7 @@ ordersRouter.post('/', async (c) => {
       );
 
       if (!result || !result.lastID) {
-        return c.json({ error: 'Ошибка создания заказа' }, 500);
+        throw new Error('Ошибка создания заказа');
       }
 
       const orderId = result.lastID;
@@ -72,34 +75,33 @@ ordersRouter.post('/', async (c) => {
 
       await db.runAsync('DELETE FROM cart WHERE userId = ?', [userId]);
 
-      const order = await db.getAsync(
-        `SELECT o.*, 
-         GROUP_CONCAT(oi.productId || ':' || oi.quantity) as items
-         FROM orders o
-         LEFT JOIN order_items oi ON o.id = oi.orderId
-         WHERE o.id = ?
-         GROUP BY o.id`,
-        [orderId]
-      );
+      // Получаем детали заказа с items
+      const orderItems = await db.allAsync(`
+        SELECT oi.*, p.name, p.image, cat.slug as category
+        FROM order_items oi 
+        JOIN products p ON oi.productId = p.id 
+        LEFT JOIN categories cat ON p.categoryId = cat.id
+        WHERE oi.orderId = ?
+      `, [orderId]);
 
-      const orderItems = order.items ? order.items.split(',').map(item => {
-        const [productId, quantity] = item.split(':');
-        const product = products.find(p => p.id === parseInt(productId));
-        return {
-          productId: parseInt(productId),
-          quantity: parseInt(quantity),
-          name: product.name,
-          price: product.price,
-          image: product.image
-        };
-      }) : [];
+      const order = await db.getAsync('SELECT * FROM orders WHERE id = ?', [orderId]);
+
+      await db.run('COMMIT');
 
       return c.json({
         ...order,
-        items: orderItems,
+        items: orderItems.map(item => ({
+          productId: item.productId,
+          quantity: item.quantity,
+          price: item.price,
+          name: item.name,
+          image: item.image
+        })),
         createdAt: new Date(order.createdAt).toISOString()
       }, 201);
     } catch (err) {
+      // Откатываем транзакцию
+      await db.run('ROLLBACK');
       throw err;
     }
   } catch (error) {
