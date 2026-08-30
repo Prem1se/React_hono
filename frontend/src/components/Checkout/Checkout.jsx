@@ -35,7 +35,7 @@ const Checkout = () => {
     }
   }, [cartItems.length, paymentSuccess, navigate]);
 
-  // Если гость пытается оформить заказ — показать модалку входа
+  // Если гость пытается оформить заказ - показать модалку входа
   useEffect(() => {
     if (!user && cartItems.length > 0 && !paymentSuccess) {
       setShowLoginModal(true);
